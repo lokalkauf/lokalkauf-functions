@@ -15,10 +15,11 @@ export const traderDetail = functions.https.onRequest(async (req, res) => {
       });
     const bucket = admin.storage().bucket();
     let imagePath;
-    if ( trader.defaultImagePath !== undefined ){
-	imagePath = getPathToThumbnail(trader.defaultImagePath);
-    } else {
-	imagePath = "";
+    try{
+      imagePath = getPathToThumbnail(trader.defaultImagePath);
+    } catch(e) {
+      console.log("Trader has no default image selected")
+      imagePath = "";
     }
     const url =
       (await 'https://firebasestorage.googleapis.com/v0/b/') +
