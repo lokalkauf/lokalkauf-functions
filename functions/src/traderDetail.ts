@@ -14,11 +14,17 @@ export const traderDetail = functions.https.onRequest(async (req, res) => {
         console.log('Error getting documents', err);
       });
     const bucket = admin.storage().bucket();
+    let imagePath;
+    if ( trader.defaultImagePath !== undefined ){
+	imagePath = getPathToThumbnail(trader.defaultImagePath);
+    } else {
+	imagePath = "";
+    }
     const url =
       (await 'https://firebasestorage.googleapis.com/v0/b/') +
       bucket.name +
       '/o/' +
-      encodeURIComponent(getPathToThumbnail(trader.defaultImagePath)) +
+      encodeURIComponent(imagePath) +
       '?alt=media';
     res.status(200).send(buildHtmlWithTrader(traderId, trader, url));
   });
