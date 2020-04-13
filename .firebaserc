@@ -1,1 +1,6 @@
-{}
+{
+  "projects": {
+    "default": "lokalkauf-staging",
+    "production": "lokalkauf-271814"
+  }
+}
