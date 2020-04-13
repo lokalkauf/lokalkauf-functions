@@ -1,0 +1,33 @@
+name: Pull Request Check 
+
+on:
+  pull_request:
+    branches:
+    - master
+    - incubator
+
+jobs:
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone Repository 
+      uses: actions/checkout@master
+
+    - name: Setup Node.js
+      uses: actions/setup-node@master
+      with:
+        node-version: '12.x'
+
+    - name: npm install
+      run: npm ci
+      working-directory: ./functions
+
+    - name: Build Project 
+      run: npm run build
+      working-directory: ./functions
+
+    - name: Check Code Style
+      run: npm run lint
+      continue-on-error: true
+      working-directory: ./functions
