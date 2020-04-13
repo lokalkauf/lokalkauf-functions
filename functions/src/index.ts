@@ -1,5 +1,6 @@
+import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-admin.initializeApp();
+admin.initializeApp(functions.config().firebase);
 
 const sendGrid = require('./sendGrid');
 const sendCustomVerifyMail = require('./sendCustomVerifyMail');
