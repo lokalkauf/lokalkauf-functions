@@ -9,6 +9,7 @@ const deleteThumbnailsTriggeredByImageDeletion = require('./deleteThumbnailsTrig
 const deleteUser = require('./deleteUser');
 const backupFirestoreDatabaseToStorage = require('./backupFirestoreDatabaseToStorage');
 const traderDetail = require('./traderDetail');
+const genSitemap = require('./genSitemap');
 
 exports.sendGrid = sendGrid.sendGrid;
 exports.sendCustomVerifyMail = sendCustomVerifyMail.sendCustomVerifyMail;
@@ -17,3 +18,4 @@ exports.deleteThumbnailsTriggeredByImageDeletion = deleteThumbnailsTriggeredByIm
 exports.deleteUser = deleteUser.deleteUser;
 exports.backupFirestoreDatabaseToStorage = backupFirestoreDatabaseToStorage.backupFirestoreDatabaseToStorage;
 exports.traderDetail = traderDetail.traderDetail;
+exports.genSitemap = genSitemap.genSitemap;
