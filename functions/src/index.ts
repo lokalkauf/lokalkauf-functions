@@ -10,6 +10,7 @@ const deleteUser = require('./deleteUser');
 const backupFirestoreDatabaseToStorage = require('./backupFirestoreDatabaseToStorage');
 const traderDetail = require('./traderDetail');
 const genSitemap = require('./genSitemap');
+const serveSitemap = require('./serveSitemap');
 
 exports.sendGrid = sendGrid.sendGrid;
 exports.sendCustomVerifyMail = sendCustomVerifyMail.sendCustomVerifyMail;
@@ -19,3 +20,5 @@ exports.deleteUser = deleteUser.deleteUser;
 exports.backupFirestoreDatabaseToStorage = backupFirestoreDatabaseToStorage.backupFirestoreDatabaseToStorage;
 exports.traderDetail = traderDetail.traderDetail;
 exports.genSitemap = genSitemap.genSitemap;
+exports.serveIndex = serveSitemap.serveSitemapIndex;
+exports.serveTraderSitemap = serveSitemap.serveTraderSitemap;
