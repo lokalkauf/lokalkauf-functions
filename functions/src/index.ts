@@ -11,6 +11,8 @@ const backupFirestoreDatabaseToStorage = require('./backupFirestoreDatabaseToSto
 const traderDetail = require('./traderDetail');
 const genSitemap = require('./genSitemap');
 const serveSitemapIndex = require('./serveSitemap/serveSitemapIndex');
+const serveTraderSitemap = require('./serveSitemap/serveTraderSitemap');
+const serveBaseSitemap = require('./serveSitemap/serveBaseSitemap');
 
 exports.sendGrid = sendGrid.sendGrid;
 exports.sendCustomVerifyMail = sendCustomVerifyMail.sendCustomVerifyMail;
@@ -21,3 +23,5 @@ exports.backupFirestoreDatabaseToStorage = backupFirestoreDatabaseToStorage.back
 exports.traderDetail = traderDetail.traderDetail;
 exports.genSitemap = genSitemap.genSitemap;
 exports.serveSitemapIndex = serveSitemapIndex.serveSitemapIndex;
+exports.serveTraderSitemap = serveTraderSitemap.serveTraderSitemap;
+exports.serveBaseSitemap = serveBaseSitemap.serveBaseSitemap;
