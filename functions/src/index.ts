@@ -12,6 +12,7 @@ const traderDetail = require('./traderDetail');
 const serveSitemapIndex = require('./serveSitemap/serveSitemapIndex');
 const serveTraderSitemap = require('./serveSitemap/serveTraderSitemap');
 const serveBaseSitemap = require('./serveSitemap/serveBaseSitemap');
+const locationByDistance = require('./locationByDistance');
 
 exports.sendGrid = sendGrid.sendGrid;
 exports.sendCustomVerifyMail = sendCustomVerifyMail.sendCustomVerifyMail;
@@ -23,3 +24,4 @@ exports.traderDetail = traderDetail.traderDetail;
 exports.serveSitemapIndex = serveSitemapIndex.serveSitemapIndex;
 exports.serveTraderSitemap = serveTraderSitemap.serveTraderSitemap;
 exports.serveBaseSitemap = serveBaseSitemap.serveBaseSitemap;
+exports.locationByDistance = locationByDistance.locationByDistance;
