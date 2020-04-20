@@ -1,10 +1,10 @@
 name: Pull Request Check 
 
 on:
-  pull_request:
-    branches:
+  push:
+    branches-ignore:
     - master
-    - incubator
+    - develop
 
 jobs:
   build:
@@ -12,22 +12,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Clone Repository 
-      uses: actions/checkout@master
+      uses: actions/checkout@v2
 
     - name: Setup Node.js
-      uses: actions/setup-node@master
+      uses: actions/setup-node@v1
       with:
         node-version: '12.x'
 
+    - name: Init. Node.js Cache
+      uses: actions/cache@v1
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
     - name: npm install
       run: npm ci
-      working-directory: ./functions
 
-    - name: Build Project 
+    - name: Build
       run: npm run build
-      working-directory: ./functions
 
     - name: Check Code Style
       run: npm run lint
       continue-on-error: true
-      working-directory: ./functions
+

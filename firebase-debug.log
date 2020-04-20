@@ -1,0 +1,113 @@
+[debug] [2020-04-20T22:14:35.847Z] ----------------------------------------------------------------------
+[debug] [2020-04-20T22:14:35.849Z] Command:       /usr/bin/node /usr/bin/firebase deploy --only functions
+[debug] [2020-04-20T22:14:35.849Z] CLI Version:   8.0.0
+[debug] [2020-04-20T22:14:35.849Z] Platform:      linux
+[debug] [2020-04-20T22:14:35.849Z] Node Version:  v13.13.0
+[debug] [2020-04-20T22:14:35.850Z] Time:          Mon Apr 20 2020 23:14:35 GMT+0100 (Irish Standard Time)
+[debug] [2020-04-20T22:14:35.850Z] ----------------------------------------------------------------------
+[debug] [2020-04-20T22:14:35.850Z] 
+[debug] [2020-04-20T22:14:35.856Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-04-20T22:14:35.856Z] > authorizing via signed-in user
+[debug] [2020-04-20T22:14:35.856Z] [iam] checking project lokalkauf-security-testing for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2020-04-20T22:14:35.858Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/lokalkauf-security-testing:testIamPermissions  
+ {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2020-04-20T22:14:36.804Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Mon, 20 Apr 2020 22:14:36 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=679","alt-svc":"quic=\":443\"; ma=2592000; v=\"46,43\",h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] 
+[info] === Deploying to 'lokalkauf-security-testing'...
+[info] 
+[info] i  deploying functions
+[debug] [2020-04-20T22:14:36.807Z] TypeError [ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string. Received undefined
+    at validateString (internal/validators.js:120:11)
+    at Object.join (path.js:1039:7)
+    at Config.path (/usr/lib/node_modules/firebase-tools/lib/config.js:125:39)
+    at getChildEnvironment (/usr/lib/node_modules/firebase-tools/lib/deploy/lifecycleHooks.js:50:49)
+    at runTargetCommands (/usr/lib/node_modules/firebase-tools/lib/deploy/lifecycleHooks.js:71:14)
+    at /usr/lib/node_modules/firebase-tools/lib/deploy/lifecycleHooks.js:122:24
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2020-04-20T22:15:03.369Z] ----------------------------------------------------------------------
+[debug] [2020-04-20T22:15:03.371Z] Command:       /usr/bin/node /usr/bin/firebase deploy --only functions
+[debug] [2020-04-20T22:15:03.371Z] CLI Version:   8.0.0
+[debug] [2020-04-20T22:15:03.371Z] Platform:      linux
+[debug] [2020-04-20T22:15:03.371Z] Node Version:  v13.13.0
+[debug] [2020-04-20T22:15:03.371Z] Time:          Mon Apr 20 2020 23:15:03 GMT+0100 (Irish Standard Time)
+[debug] [2020-04-20T22:15:03.371Z] ----------------------------------------------------------------------
+[debug] [2020-04-20T22:15:03.371Z] 
+[debug] [2020-04-20T22:15:03.377Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-04-20T22:15:03.377Z] > authorizing via signed-in user
+[debug] [2020-04-20T22:15:03.377Z] [iam] checking project lokalkauf-security-testing for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2020-04-20T22:15:03.379Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/lokalkauf-security-testing:testIamPermissions  
+ {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2020-04-20T22:15:04.363Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Mon, 20 Apr 2020 22:15:04 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=694","alt-svc":"quic=\":443\"; ma=2592000; v=\"46,43\",h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] 
+[info] === Deploying to 'lokalkauf-security-testing'...
+[info] 
+[info] i  deploying functions
+[info] Running command: npm --prefix "$RESOURCE_DIR" run lint
+[info] Running command: npm --prefix "$RESOURCE_DIR" run build
+[info] ✔  functions: Finished running predeploy script.
+[debug] [2020-04-20T22:15:11.833Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "tslint --project tsconfig.json",
+    "build": "tsc",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "8"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "@angular/fire": "^6.0.0",
+    "@sendgrid/mail": "^7.0.0",
+    "firebase": "^7.14.1",
+    "firebase-admin": "^8.6.0",
+    "firebase-functions": "^3.3.0",
+    "firestore": "^1.1.6",
+    "geofirestore": "^3.4.1"
+  },
+  "devDependencies": {
+    "tslint": "^5.12.0",
+    "typescript": "^3.2.2",
+    "firebase-functions-test": "^0.1.6"
+  },
+  "private": true
+}
+[info] i  functions: ensuring necessary APIs are enabled...
+[debug] [2020-04-20T22:15:11.834Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/lokalkauf-security-testing/services/cloudfunctions.googleapis.com  
+ 
+[debug] [2020-04-20T22:15:11.834Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/lokalkauf-security-testing/services/runtimeconfig.googleapis.com  
+ 
+[debug] [2020-04-20T22:15:12.871Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Mon, 20 Apr 2020 22:15:12 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"quic=\":443\"; ma=2592000; v=\"46,43\",h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-04-20T22:15:13.049Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Mon, 20 Apr 2020 22:15:12 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"quic=\":443\"; ma=2592000; v=\"46,43\",h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] ✔  functions: all necessary APIs are enabled
+[debug] [2020-04-20T22:15:13.052Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/lokalkauf-security-testing/adminSdkConfig  
+ 
+[debug] [2020-04-20T22:15:13.591Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Mon, 20 Apr 2020 22:15:13 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"quic=\":443\"; ma=2592000; v=\"46,43\",h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] i  functions: preparing . directory for uploading...
+[debug] [2020-04-20T22:15:13.598Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/lokalkauf-security-testing/configs  
+ 
+[debug] [2020-04-20T22:15:14.202Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Mon, 20 Apr 2020 22:15:14 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"quic=\":443\"; ma=2592000; v=\"46,43\",h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-04-20T22:15:14.208Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/lokalkauf-security-testing/configs/mail/variables  
+ 
+[debug] [2020-04-20T22:15:14.209Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/lokalkauf-security-testing/configs/sendmail/variables  
+ 
+[debug] [2020-04-20T22:15:14.210Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/lokalkauf-security-testing/configs/app/variables  
+ 
+[debug] [2020-04-20T22:15:14.724Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Mon, 20 Apr 2020 22:15:14 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"quic=\":443\"; ma=2592000; v=\"46,43\",h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-04-20T22:15:14.726Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/lokalkauf-security-testing/configs/mail/variables/oauth/client_id  
+ 
+[debug] [2020-04-20T22:15:14.727Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/lokalkauf-security-testing/configs/mail/variables/oauth/client_secret  
+ 
+[debug] [2020-04-20T22:15:14.728Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/lokalkauf-security-testing/configs/mail/variables/oauth/refresh_token  
+ 
+[debug] [2020-04-20T22:15:14.817Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Mon, 20 Apr 2020 22:15:14 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"quic=\":443\"; ma=2592000; v=\"46,43\",h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-04-20T22:15:14.819Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/lokalkauf-security-testing/configs/app/variables/backupbucket  
+ 
+[debug] [2020-04-20T22:15:14.820Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/lokalkauf-security-testing/configs/app/variables/url  
+ 
