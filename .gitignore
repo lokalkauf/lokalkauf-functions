@@ -1,8 +1,12 @@
 ## Compiled JavaScript files
 **/*.js
 **/*.js.map
+**/*secret*
+**/*.log
 
 # Typescript v1 declaration files
 typings/
 
 node_modules/
+
+secrets/
