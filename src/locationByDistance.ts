@@ -35,10 +35,15 @@ class LocationDistanceResponse {
 
 // Cloud Function to get a list of nearby traders where are public, 
 // includes server side filtering and paging logic
+
 export const locationByDistance = functions.https.onCall(async (request: LocationDistanceRequest, context: any) => {
   
-  const locations = await geoFire.collection('locations')
-                    .where('categories', 'array-contains-any', request.categories )
+  const ref = geoFire.collection('locations');
+  const query = (request.categories && request.categories.length > 0)?
+                          ref.where('categories', 'array-contains-any', request.categories) : 
+                          ref;
+
+  const locations = await query
                     .near({
                       center: new firestore.GeoPoint(request.coordinates[0], request.coordinates[1]),
                       radius: request.radius
