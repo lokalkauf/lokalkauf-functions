@@ -1,11 +1,6 @@
 import * as functions from 'firebase-functions';
-import { firestore } from 'firebase';
-import { GeoFirestore } from 'geofirestore';
-import * as admin from 'firebase-admin';
-
-
-const database = admin.firestore()
-const geoFire = new GeoFirestore(database)
+import * as locations from './repositories/locations.repository';
+import { LocationEntity } from './models/locationEntity';
 
 
 class LocationDistanceRequest {
@@ -19,7 +14,7 @@ class LocationDistanceRequest {
 
 class LocationDistanceResponse {
   paging:any = {};
-  locations:any[] = [];
+  locations:LocationEntity[] = [];
 
   constructor(locations: any[], totalItems: number, pageSize: number, pageIndex: number) {
 
@@ -37,28 +32,9 @@ class LocationDistanceResponse {
 // includes server side filtering and paging logic
 
 export const locationByDistance = functions.https.onCall(async (request: LocationDistanceRequest, context: any) => {
-  
-  const ref = geoFire.collection('locations');
-  const query = (request.categories && request.categories.length > 0)?
-                          ref.where('categories', 'array-contains-any', request.categories) : 
-                          ref;
+  console.log(request);
 
-  const locations = await query
-                    .near({
-                      center: new firestore.GeoPoint(request.coordinates[0], request.coordinates[1]),
-                      radius: request.radius
-                    }).get();
-
-  let result = locations.docs.map((d) =>  { 
-                              return { 
-                                id: d.id, 
-                                distance: d.distance, 
-                                categories: d.data().categories 
-                            }})
-                            .sort((a, b) => {
-                              return (request.desc === true)? 
-                                b.distance - a.distance : a.distance - b.distance
-                            });
+  let result = await locations.loadLocationsByDistance(request.coordinates, request.radius, request.categories, request.desc);
 
   const totalItems = result.length;
 
