@@ -2,7 +2,7 @@ export interface LocationEntity {
 
     id:string; 
     distance: number; 
-    categories: number[];
+    categories: string[];
 
     businessname: string;
     telephone: string;
@@ -13,5 +13,6 @@ export interface LocationEntity {
     street: string;
     number: string;
 
-    thumbnailURL: string;
+    defaultImagePath: string;
+    status: string;
 }

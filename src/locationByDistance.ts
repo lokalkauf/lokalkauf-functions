@@ -16,14 +16,14 @@ class LocationDistanceResponse {
   paging:any = {};
   locations:LocationEntity[] = [];
 
-  constructor(locations: any[], totalItems: number, pageSize: number, pageIndex: number) {
+  constructor(loctns: any[], totalItems: number, pageSize: number, pageIndex: number) {
 
     this.paging.totalItems = totalItems;
     this.paging.totalPages = totalItems/pageSize;
     this.paging.pageIndex = pageIndex;
     this.paging.pageSize = pageSize;    
 
-    this.locations = locations;
+    this.locations = loctns;
   }
 }
 
