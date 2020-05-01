@@ -1,91 +1,59 @@
 import * as functions from 'firebase-functions';
-import { firestore } from 'firebase';
-import { GeoFirestore, GeoQuery } from 'geofirestore';
-import * as admin from 'firebase-admin';
+import * as locations from './repositories/locations.repository';
+import { LocationEntity } from './models/locationEntity';
 
 
-const database = admin.firestore()
-const geoFire = new GeoFirestore(database)
+interface LocationDistanceRequest {
+  coordinates: number[];
+  radius: number;
+  desc: boolean;
+  pageSize: number;
+  pageIndex: number;
+  categories: string[];
+  countOnly: boolean;
+}
 
+class LocationDistanceResponse {
+  paging:any = {};
+  locations:LocationEntity[] = [];
 
+  constructor(loctns: any[], totalItems: number, pageSize: number, pageIndex: number) {
 
-// Cloud Function to get a list of nearby traders where are public
-export const locationByDistance = functions.https.onCall(async (data, context) => {
-  
-  const traders = await getTraders(data.radius, data.coords)
-  console.log("Starting locationByDistance")
-  return traders
- 
+    this.paging.totalItems = totalItems;
+    this.paging.totalPages = Math.ceil(totalItems/pageSize);
+    this.paging.pageIndex = pageIndex;
+    this.paging.pageSize = pageSize;    
 
-});
-
-/////////////////////////////////////
-async function getTraders(radius: number, coords: Array<number>, /** resultsPerPage: number, pageNumber: number */){
-  
-  const query: GeoQuery = geoFire.collection('locations').near({
-    center: new firestore.GeoPoint(coords[0], coords[1]),
-    radius,
-  });
-  const publicTraderIds = await getPublicTraders(query)
-  console.log("Starting getTraders")
-  const allTraders = await query.get()
-  const tradersNearby: { id: string; distance: number; }[] = []
-
-  publicTraderIds.forEach(element => {
-    const traderId = String(allTraders.docs.filter(trader => trader.id === element).map((traders) => traders.id))
-    const traderDistance = Number(allTraders.docs.filter(trader => trader.id === element).map((traders) => traders.distance))
-    tradersNearby.push({id: traderId, distance: traderDistance })
-  });
-
-  return tradersNearby
- 
+    this.locations = loctns;
+  }
 }
 
 
-/////////////////////////////////////
-async function getPublicTraders(allTraders: GeoQuery){
-  
-  const traderIds = await getTraderIds(allTraders)
-  console.log("Starting getPublicTraders")
+// Cloud Function to get a list of nearby traders where are public, 
+// includes server side filtering and paging logic
 
-  var chunkedTraders = []
-  var chunSize = 10
-  for (var i=0; i<traderIds.length; i+=chunSize) {
-    chunkedTraders.push(traderIds.slice(i,i+chunSize))
+export const locationByDistance = functions.https.onCall(async (request: LocationDistanceRequest, context: any) => {
+  console.log(request);
+
+  let result = await locations.loadLocationsByDistance(request.coordinates, request.radius, request.categories, request.desc);
+
+  const totalItems = result.length;
+
+  if (result && result.length > 0) {
+    const start = request.pageIndex * request.pageSize;
+    const end = start + request.pageSize ;
+
+    result = result.slice(start, end);
   }
 
-  const publicTraders = await Promise.all(
-    chunkedTraders.map((chunk) =>
-      database.collection('Traders')
-      .where(admin.firestore.FieldPath.documentId(), 'in', chunk)
-      .where('status', '==', 'PUBLIC')
-      .get()
-    )
-  )
+  const out =  new LocationDistanceResponse(result, totalItems, request.pageSize, request.pageIndex);  
 
-  const publicTraderIds: string[] = []
-  publicTraders.forEach((dataOuter) => 
-    dataOuter.forEach((dataInner) =>
-      publicTraderIds.push(dataInner.id)
-    )
-  )
-  return publicTraderIds
-}
+  // countOnly == true allows to get only the Counts without getting the results
+  // this is often needed to get only the existence of locations on the client without the whole
+  // to transfer data to the client via the network
 
+  if (request.countOnly) 
+    out.locations = [];
 
-
-/////////////////////////////////////
-async function getTraderIds(allTraders: GeoQuery){
-  
-  const shopIds = await new Promise<Array<String>>((resolve) => 
-    allTraders.onSnapshot((snapshot) => {
-      const Ids = snapshot.docs.map((traders) => traders.id)
-      resolve(Ids)
-    })
-  )
-  console.log("Starting getTraderIds")
-  
-  return shopIds
-}
-
-
+  return out;
+});
