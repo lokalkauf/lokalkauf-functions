@@ -46,7 +46,7 @@ export const locationByDistance = functions.https.onCall(async (request: Locatio
     result = result.slice(start, end);
   }
 
-  var out =  new LocationDistanceResponse(result, totalItems, request.pageSize, request.pageIndex);  
+  const out =  new LocationDistanceResponse(result, totalItems, request.pageSize, request.pageIndex);  
 
   // countOnly == true allows to get only the Counts without getting the results
   // this is often needed to get only the existence of locations on the client without the whole

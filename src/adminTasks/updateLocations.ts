@@ -1,6 +1,6 @@
 import {Stage, loadApp } from './adminStage';
 
-const app = loadApp(Stage.DEVELOPMENT);
+const app = loadApp(Stage.INTEGRATION);
 
 /*
    this task is for administrative purposes only, to perform an initial update.
