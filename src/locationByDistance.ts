@@ -3,13 +3,14 @@ import * as locations from './repositories/locations.repository';
 import { LocationEntity } from './models/locationEntity';
 
 
-class LocationDistanceRequest {
-  coordinates: number[] = [];
-  radius: number = 20;
-  desc: boolean = false;
-  pageSize: number = 10;
-  pageIndex: number = 0;
-  categories: string[] = [];
+interface LocationDistanceRequest {
+  coordinates: number[];
+  radius: number;
+  desc: boolean;
+  pageSize: number;
+  pageIndex: number;
+  categories: string[];
+  countOnly: boolean;
 }
 
 class LocationDistanceResponse {
@@ -19,7 +20,7 @@ class LocationDistanceResponse {
   constructor(loctns: any[], totalItems: number, pageSize: number, pageIndex: number) {
 
     this.paging.totalItems = totalItems;
-    this.paging.totalPages = totalItems/pageSize;
+    this.paging.totalPages = Math.ceil(totalItems/pageSize);
     this.paging.pageIndex = pageIndex;
     this.paging.pageSize = pageSize;    
 
@@ -45,5 +46,14 @@ export const locationByDistance = functions.https.onCall(async (request: Locatio
     result = result.slice(start, end);
   }
 
-  return  new LocationDistanceResponse(result, totalItems, request.pageSize, request.pageIndex);  
+  var out =  new LocationDistanceResponse(result, totalItems, request.pageSize, request.pageIndex);  
+
+  // countOnly == true allows to get only the Counts without getting the results
+  // this is often needed to get only the existence of locations on the client without the whole
+  // to transfer data to the client via the network
+
+  if (request.countOnly) 
+    out.locations = [];
+
+  return out;
 });

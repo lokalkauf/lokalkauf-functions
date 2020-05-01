@@ -14,5 +14,6 @@ export interface LocationEntity {
     number: string;
 
     defaultImagePath: string;
+    thumbnailURL: string;
     status: string;
 }
