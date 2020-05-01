@@ -7,6 +7,9 @@
     ],
     "ignore":["**/adminTasks"]
   },
+  "firestore": {
+    "indexes": "firestore.indexes.json"
+  },
   "emulators": {
     "functions": {
       "port": "5003"

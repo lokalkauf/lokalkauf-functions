@@ -1,0 +1,79 @@
+{
+    "indexes": [
+      {
+        "collectionGroup": "GeoData",
+        "queryScope": "COLLECTION",
+        "fields": [
+          {
+            "fieldPath": "d.city_arr",
+            "arrayConfig": "CONTAINS"
+          },
+          {
+            "fieldPath": "d.postalcode",
+            "order": "ASCENDING"
+          }
+        ]
+      },
+      {
+        "collectionGroup": "GeoData",
+        "queryScope": "COLLECTION",
+        "fields": [
+          {
+            "fieldPath": "d.postal_arr",
+            "arrayConfig": "CONTAINS"
+          },
+          {
+            "fieldPath": "d.postalcode",
+            "order": "ASCENDING"
+          }
+        ]
+      },
+      {
+        "collectionGroup": "locations",
+        "queryScope": "COLLECTION",
+        "fields": [
+          {
+            "fieldPath": "d.categories",
+            "arrayConfig": "CONTAINS"
+          },
+          {
+            "fieldPath": "d.status",
+            "order": "ASCENDING"
+          },
+          {
+            "fieldPath": "g",
+            "order": "ASCENDING"
+          }
+        ]
+      },
+      {
+        "collectionGroup": "locations",
+        "queryScope": "COLLECTION",
+        "fields": [
+          {
+            "fieldPath": "d.categories",
+            "arrayConfig": "CONTAINS"
+          },
+          {
+            "fieldPath": "g",
+            "order": "ASCENDING"
+          }
+        ]
+      },
+      {
+        "collectionGroup": "locations",
+        "queryScope": "COLLECTION",
+        "fields": [
+          {
+            "fieldPath": "d.status",
+            "order": "ASCENDING"
+          },
+          {
+            "fieldPath": "g",
+            "order": "ASCENDING"
+          }
+        ]
+      }
+    ],
+    "fieldOverrides": []
+  }
