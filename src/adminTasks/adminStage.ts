@@ -7,9 +7,20 @@ const prodStageSecret = require("../../secrets/prod-secret.json");
 
 
 export enum Stage {
-    DEVELOPMENT,
-    INTEGRATION,
-    PRODUCTION
+    DEVELOPMENT = "development",
+    INTEGRATION = "integration",
+    PRODUCTION = "production"
+}
+
+export function getBackupBucket(stage: Stage){
+    switch(stage) {
+        case Stage.DEVELOPMENT:
+            return 'gs://lokalkauf-st-backup-bucket';
+        case Stage.INTEGRATION:
+            return 'gs://staging-backup-bucket';
+        case Stage.PRODUCTION:
+            return 'gs://production-backup-bucket';
+    }
 }
 
 export function loadApp(stage: Stage) {
