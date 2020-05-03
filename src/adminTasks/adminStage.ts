@@ -40,6 +40,22 @@ export function loadApp(stage: Stage) {
      }
 }
 
+export function callAsync(...fncts: Function[]) {
+    new Promise(async (res, rej) => {
+        for(const func of fncts) {
+            try {
+                await func();
+            } catch (e) {
+                console.log('ERROR occured: ' + e);
+                rej(e);
+                break;
+            }
+        }
+
+        res();
+    });
+}
+
 function loadAdminApp(secret:any, dbUrl: string, storageBucketUrl: string) {
     return admin.initializeApp({
         credential: admin.credential.cert(secret),

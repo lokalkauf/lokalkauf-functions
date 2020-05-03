@@ -1,4 +1,4 @@
-import {Stage, loadApp, getBackupBucket } from './adminStage';
+import {Stage, loadApp, getBackupBucket, callAsync } from './adminStage';
 import * as backupService from '../common/services/db.backup';
 
 /*
@@ -6,17 +6,15 @@ import * as backupService from '../common/services/db.backup';
 */
 async function creeateBackup() {
 
-   const stage = process.argv[2] as Stage;
+    const stage = process.argv[2] as Stage;
+    const app = loadApp(stage);
+    const projectID = (app.options.credential as any)?.projectId;
+    const bucketName = getBackupBucket(stage);
 
-   console.log(`backupd the ${stage} stage...`);
-   const app = loadApp(stage);
+    
 
 
-   console.log(getBackupBucket(stage));
-
-   await backupService.backup(getBackupBucket(stage), app); 
+    await backupService.backup(bucketName, projectID, app); 
 }
 
-new Promise(async (res, rej) => {
-    await creeateBackup();
-});
+callAsync(creeateBackup);
