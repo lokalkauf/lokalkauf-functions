@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
-import * as locations from './repositories/locations.repository';
-import { LocationEntity } from './models/locationEntity';
+import * as locations from '../common/repositories/locations.repository';
+import { LocationEntity } from '../common/models/locationEntity';
 
 
 interface LocationDistanceRequest {

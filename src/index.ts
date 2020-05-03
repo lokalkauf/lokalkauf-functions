@@ -2,18 +2,23 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 admin.initializeApp(functions.config().firebase);
 
-const sendGrid = require('./sendGrid');
-const sendCustomVerifyMail = require('./sendCustomVerifyMail');
-const checkFileNumberLimit = require('./checkFileNumberLimit');
-const deleteThumbnailsTriggeredByImageDeletion = require('./deleteThumbnailsTriggeredByImageDeletion');
-const deleteUser = require('./deleteUser');
-const backupFirestoreDatabaseToStorage = require('./backupFirestoreDatabaseToStorage');
-const traderDetail = require('./traderDetail');
-const serveSitemapIndex = require('./serveSitemap/serveSitemapIndex');
-const serveTraderSitemap = require('./serveSitemap/serveTraderSitemap');
-const serveBaseSitemap = require('./serveSitemap/serveBaseSitemap');
-const locationByDistance = require('./locationByDistance');
+const sendGrid = require('./api/sendGrid');
+const traderDetail = require('./api/traderDetail');
+const serveSitemapIndex = require('./api/serveSitemap/serveSitemapIndex');
+const serveTraderSitemap = require('./api/serveSitemap/serveTraderSitemap');
+const serveBaseSitemap = require('./api/serveSitemap/serveBaseSitemap');
+const locationByDistance = require('./api/locationByDistance');
+
+
+const sendCustomVerifyMail = require('./triggers/sendCustomVerifyMail');
+const checkFileNumberLimit = require('./triggers/checkFileNumberLimit');
+const deleteThumbnailsTriggeredByImageDeletion = require('./triggers/deleteThumbnailsTriggeredByImageDeletion');
+const deleteUser = require('./triggers/deleteUser');
 const syncLocationsOnTradersChange = require('./triggers/syncLocationsOnTradersChange');
+
+
+const backupFirestoreDatabaseToStorage = require('./jobs/backupFirestoreDatabaseToStorage');
+
 
 exports.sendGrid = sendGrid.sendGrid;
 exports.sendCustomVerifyMail = sendCustomVerifyMail.sendCustomVerifyMail;

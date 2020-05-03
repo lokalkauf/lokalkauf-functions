@@ -18,8 +18,8 @@ document is triggered in the 'Traders' collection.
 
 
 import * as functions from 'firebase-functions';
-import * as locations from '../repositories/locations.repository';
-import { LocationEntity } from '../models/locationEntity';
+import * as locations from '../common/repositories/locations.repository';
+import { LocationEntity } from '../common/models/locationEntity';
 
 
 export const syncLocationsOnTradersChange = functions.firestore
@@ -47,10 +47,11 @@ export const syncLocationsOnTradersChange = functions.firestore
             if (data.number) values.number = data.number;
             if (data.storeEmail) values.storeEmail = data.storeEmail;
             if (data.telephone) values.telephone = data.telephone;           
-            if (data.defaultImagePath) values.defaultImagePath = data.defaultImagePath;
-            if (data.thumbnailURL) values.thumbnailURL = data.thumbnailURL;
             if (data.status) values.status = data.status;      
             if (data.storeType) values.categories = Object.keys(data.storeType).filter(k => data.storeType[k] === true);
+            
+            values.defaultImagePath = !data.defaultImagePath? '' : data.defaultImagePath;
+            values.thumbnailURL = !data.thumbnailURL? '' : data.thumbnailURL;
 
             await locations.upsertLocation(context.params.traderID, data.confirmedLocation, values);
         }   

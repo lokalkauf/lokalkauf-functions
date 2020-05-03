@@ -1,4 +1,6 @@
 import {Stage, loadApp } from './adminStage';
+import * as admin from 'firebase-admin';
+
 
 const app = loadApp(Stage.INTEGRATION);
 
@@ -44,38 +46,47 @@ async function updateLocations() {
 
             console.log(value);
 
-            await app.firestore()
-               .collection('locations')
-               .doc(id)
-               .set({
-                    d : value
-                }, {merge:true});             
+            try {
+
+                await app.firestore()
+                .collection('locations')
+                .doc(id)
+                .set({
+                        d : value
+                    }, {merge:true});     
+            }catch(e) {
+                console.log(`error while updating location: ${id} - ${e}`);
+            }        
         });
     }
 }
 
+async function updateConfirmedCoordinatesInTraders() {
+
+    const result = await app.firestore().collection('locations').get();
+
+    if (result && result.docs && result.docs.length > 0) {
+        for(const location of result.docs) {
+            const data: any = location.data(); 
+
+            if(data.d.coordinates) {
+                const coords = data.d.coordinates as admin.firestore.GeoPoint;
+                const confirmedCoords = [coords.latitude, coords.longitude];
+
+                console.log(confirmedCoords);
+
+                await app.firestore()
+                         .collection('Traders')
+                         .doc(location.id)
+                         .set({
+                                confirmedLocation : confirmedCoords
+                            }, {merge:true});  
+            }
+        }
+    }
+}
+
 new Promise(async (res, rej) => {
+    await updateConfirmedCoordinatesInTraders();
     await updateLocations();
 });
-
-
-
-// async function getThumbnailURL(imagePath: string, size = '200x200'): Promise<string> {
-//     const foldername = imagePath.substring(0, imagePath.lastIndexOf('/') + 1);
-//     const filenameWithoutExt = imagePath.substring(
-//         imagePath.lastIndexOf('/'),
-//         imagePath.lastIndexOf('.')
-//     );
-
-//     const ext = imagePath.split('.').pop();
-//     const thumbnailPath = foldername + 'thumbs' + filenameWithoutExt + '_' + size + '.' + ext;
-   
-//     const thumnbnailRef = await app.storage().bucket().file('').getSignedUrl({});
-    
-//     return {
-//       url: await thumnbnailRef.getDownloadURL(),
-//       size: (await thumnbnailRef.getMetadata()).size,
-//       name: thumnbnailRef.name,
-//       path: thumnbnailRef.fullPath,
-//     };
-//   }
