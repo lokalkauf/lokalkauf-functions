@@ -23,7 +23,9 @@ export function getBackupBucket(stage: Stage){
     }
 }
 
-export function loadApp(stage: Stage) {
+export function loadApp(stageName?: Stage) {
+    const stage = (stageName)? stageName : process.argv[2] as Stage;
+
     switch(stage) {
         case Stage.DEVELOPMENT:
             return loadAdminApp(devStageSecret, 
@@ -36,24 +38,36 @@ export function loadApp(stage: Stage) {
         case Stage.PRODUCTION:
             return loadAdminApp(prodStageSecret, 
                 "https://lokalkauf-271814.firebaseio.com",
-                "gs://lokalkauf-271814.appspot.com");                       
+                "gs://lokalkauf-271814.appspot.com");   
+        default:
+            throw new Error(`
+
+                ${stage} is an unknown Stage! available stages are: ${Object.keys(Stage)}
+            
+            `);                    
      }
 }
 
 export function callAsync(...fncts: Function[]) {
-    new Promise(async (res, rej) => {
-        for(const func of fncts) {
-            try {
-                await func();
-            } catch (e) {
-                console.log('ERROR occured: ' + e);
-                rej(e);
-                break;
-            }
-        }
 
-        res();
-    });
+    try {
+        new Promise(async (res, rej) => {
+            for(const func of fncts) {
+                try {
+                    await func(loadApp());
+                } catch (e) {
+                    console.log('ERROR occured: ' + e + '\n\n', e);                    
+                    //rej(e);
+                    break;
+                }
+            }
+
+            res();
+        });
+
+    } catch(err) {
+        console.log('error occured: ' + err);
+    }
 }
 
 function loadAdminApp(secret:any, dbUrl: string, storageBucketUrl: string) {

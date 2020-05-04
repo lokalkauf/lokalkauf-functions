@@ -15,10 +15,14 @@
   "main": "lib/index.js",
   "dependencies": {
     "@sendgrid/mail": "^7.0.0",
+    "@types/tmp": "^0.2.0",
+    "d3-node": "^2.2.1",
     "firebase": "^7.14.1",
     "firebase-admin": "^8.6.0",
     "firebase-functions": "^3.3.0",
-    "geofirestore": "^3.4.1"
+    "geofirestore": "^3.4.1",
+    "moment": "^2.25.2",
+    "tmp": "^0.2.1"
   },
   "devDependencies": {
     "tslint": "^5.12.0",

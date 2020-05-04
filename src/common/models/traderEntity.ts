@@ -1,5 +1,14 @@
+
+
 export interface TraderEntity {
-    id:string; 
-    distance: number; 
-    categories: number[]
+    businessname: string; 
+    ownnerFirstname: string;
+    ownerLastname: string;
+    postcode: string;
+    city: string; 
+    status: string;
+    soMeShare: boolean;
+    storeType: any;
+
+    createdAt: number;
 }
