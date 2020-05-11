@@ -2,7 +2,7 @@ import {Stage, loadApp } from './adminStage';
 import * as admin from 'firebase-admin';
 
 
-const app = loadApp(Stage.INTEGRATION);
+
 
 /*
    this task is for administrative purposes only, to perform an initial update.
@@ -13,6 +13,8 @@ const app = loadApp(Stage.INTEGRATION);
 */
 
 async function updateLocations() {
+    const app = await loadApp(Stage.INTEGRATION);
+
     const result = await app.firestore().collection('Traders').get();
     console.log("tradeers loaded... " + result.docs.length);
 
@@ -62,7 +64,7 @@ async function updateLocations() {
 }
 
 async function updateConfirmedCoordinatesInTraders() {
-
+    const app = await loadApp(Stage.INTEGRATION);
     const result = await app.firestore().collection('locations').get();
 
     if (result && result.docs && result.docs.length > 0) {

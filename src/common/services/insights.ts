@@ -1,10 +1,10 @@
 import * as admin from 'firebase-admin';
-import * as tmp from 'tmp';
-import * as fs  from 'fs';
 import * as moment from 'moment';
 import * as traderRepository from '../repositories/traders.repository';
 import { TradersInsights } from '../models/insights/traders.insights';
 import { TraderEntity } from '../models/traderEntity';
+import * as quickchart from './quickchart.provider';
+import * as slack from './slack.provider';
 
 export async function traders(app: admin.app.App) : Promise<TradersInsights> {
 
@@ -19,17 +19,52 @@ export async function traders(app: admin.app.App) : Promise<TradersInsights> {
             last24h : all.filter((t: TraderEntity) => moment(t.createdAt).diff(Date.now(), 'days') > -1).length,
         };
 
+        const dataCumulative:number[] = [];
+        const dataCumulative24h:number[] = [];
+        const labelsCummulative: string[] = [];
 
-        const D3Node = require('d3-node')
-        const d3n = new D3Node({styles:'.test {fill:#000;}'})      // initializes D3 with container element
-        d3n.createSVG(10,20).append('g') // create SVG w/ 'g' tag and width/height
-        console.log(d3n.svgString());
+        for(let x=0; x < 50; x++) {
+            const itms = all.filter((t: TraderEntity) => moment(t.createdAt).diff(Date.now(), 'days') < (x*-1)).length;
+            dataCumulative.push(itms);
+            
+            const itms24h = (x > 0)? (itms - dataCumulative[x-1])*-1 : 0;
+            dataCumulative24h.push(itms24h);
 
-        const svgFile = tmp.fileSync({prefix:'lk-isights', postfix:'.svg'});
-        console.log(svgFile);
-        fs.writeFileSync(svgFile.name, d3n.svgString());
+            labelsCummulative.push(moment().subtract(x,'days').format('DD.MM'));
+        }
 
-        console.log(result);
+        const data = {
+            labels: labelsCummulative.reverse(),
+            datasets: [
+                {
+                    label: 'total',
+                    data: dataCumulative.reverse(),
+                    backgroundColor: '#78DCF4'
+                },
+                {
+                    label: '24h',
+                    data: dataCumulative24h.reverse(),
+                    backgroundColor: '#22B003'                   
+                }
+            ]
+        }
+
+        const data2 = {
+            labels: ['active', 'inactive', 'last 24h +'],
+            data: [result.active, result.inactive, result.last24h]
+        };
+
+        const tradersLast50days = await quickchart.createStackedBarsUrl('Traders', data.labels, data.datasets);
+        const tradersChartURL = await quickchart.createDoughnutUrl('curent Traders', result.total, data2.labels, data2.data);
+        
+
+        const someTraders = all.sort((a,b) => a.createdAt - b.createdAt).reverse().filter(t => t.soMeShare && t.soMeShare === true)
+                               .map(t => `<https://lokalkauf.org/trader-detail/${t.id}|${t.postcode} ${t.city} - ${t.businessname}>  (created: ${moment(t.createdAt).fromNow()})`).join('\n');
+
+                               
+        await slack.sendMessage(app, "pls. some allowed: \n\n" + someTraders);        
+        await slack.sendMessage(app, "traders system update: ", tradersChartURL);
+        await slack.sendMessage(app, "traders registration last 50 days: ", tradersLast50days);
 
         return result;
 

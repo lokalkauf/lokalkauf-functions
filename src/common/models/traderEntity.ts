@@ -1,6 +1,7 @@
 
 
 export interface TraderEntity {
+    id: string;
     businessname: string; 
     ownnerFirstname: string;
     ownerLastname: string;
