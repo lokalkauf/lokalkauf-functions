@@ -8,7 +8,7 @@ import * as admin from 'firebase-admin';
 async function creeateBackup() {
 
     const stage = process.argv[2] as Stage;
-    const app = loadApp(stage);
+    const app = await loadApp(stage);
     const projectID = (app.options.credential as any)?.projectId;
     const bucketName = getBackupBucket(stage);
 
@@ -18,8 +18,6 @@ async function creeateBackup() {
     };
 
     const firestoreClient = new admin.firestore.v1.FirestoreAdminClient({credentials: credentials, projectId: projectID});
-
-    
 
 
     await backupService.backup(bucketName, projectID, app, firestoreClient); 
