@@ -23,9 +23,12 @@
     "firebase": "^7.14.1",
     "firebase-admin": "^8.6.0",
     "firebase-functions": "^3.3.0",
+    "fs": "0.0.1-security",
     "geofirestore": "^3.4.1",
     "javascript-stringify": "^2.0.1",
+    "mkdirp": "^1.0.4",
     "moment": "^2.25.2",
+    "sharp": "^0.25.2",
     "tmp": "^0.2.1"
   },
   "devDependencies": {
