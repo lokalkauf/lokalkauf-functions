@@ -52,7 +52,9 @@ export async function resize(max_width: number, max_height: number, object: any)
             position: sharp.strategy.entropy
         })
         .flatten({ background: '#FFFFFF' })
-        .toFormat('jpeg');
+        .jpeg({
+            quality: 90
+        });
     bucket.file(filePath).createReadStream()
         .pipe(transformer)
         .pipe(thumbnailUploadStream);
