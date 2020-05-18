@@ -8,7 +8,7 @@ const sharp = require('sharp');
 export async function resize(max_width: number, max_height: number, object: any) {
     const fileBucket = object.bucket; // The Storage bucket that contains the file.
     const filePath = object.name; // File path in the bucket.
-    const contentType = object.contentType; // File content type.
+    //    const contentType = object.contentType; // File content type.
     // Download file from bucket.
     const bucket = admin.storage().bucket(fileBucket)
     const originalFile = path.join(os.tmpdir(), filePath);
@@ -18,10 +18,10 @@ export async function resize(max_width: number, max_height: number, object: any)
     await remoteFile.download({ destination: originalFile });
 
     // Exit if this is triggered on a file that is not an image.
-    if (!contentType.startsWith('image/')) {
-        console.log('This is not an image.');
-        return null;
-    }
+    // if (!contentType.startsWith('image/')) {
+    //     console.log('This is not an image.');
+    //     return null;
+    // }
 
     // Get the file name.
     const fileName = path.basename(filePath);
@@ -32,7 +32,7 @@ export async function resize(max_width: number, max_height: number, object: any)
     }
 
     const metadata = {
-        contentType: contentType,
+        contentType: 'image/jpg',
     };
     // We add a 'thumb_' prefix to thumbnails file name. That's where we'll upload the thumbnail.
     const thumbFileName = `thumb_${max_width}x${max_height}_${fileName}.jpg`;
