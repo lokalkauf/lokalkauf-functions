@@ -6,7 +6,7 @@ async function importData(app: admin.app.App) {
     console.log('start import...');
 
     const options = {
-        region: 'bonn',
+        region: 'unna',
         file: '/tmp/lokalkauf/import.csv'
     }
     

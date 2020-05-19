@@ -19,6 +19,10 @@ export interface TraderProfile {
     soMeShare: boolean;
     confirmedLocation?: number[];
     completenessIndex: number;
+    openingTime: any[];
+    osm_id: string;
+    osm_category: any;
+    licence: string;
     storeType: {
       gastronomie: boolean;
       lebensmittel: boolean;

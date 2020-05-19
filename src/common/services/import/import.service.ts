@@ -15,6 +15,7 @@ const WEIGHTS_OF_COMP_INDEX: any =  {
     description: 10,
     pickup: 5,
     delivery: 5,
+    openingTime: 20,
     email: 25,
     telephone: 20,
     homepage: 20,
@@ -22,7 +23,7 @@ const WEIGHTS_OF_COMP_INDEX: any =  {
     defaultImagePath: 0
 }
 
-const MAX_COMP_INDEX = Object.values(WEIGHTS_OF_COMP_INDEX)
+const MAX_COMP_SCORE = Object.values(WEIGHTS_OF_COMP_INDEX)
                                     .map(v => v as number)
                                     .reduce((a,b) => a + b);
 
@@ -51,6 +52,7 @@ export async function importData(app: admin.app.App, source: string, options: an
 
         const sortedTraders = (traders as []).sort((a: any, b: any) => a.completenessIndex - b.completenessIndex);
         sortedTraders.forEach((t:any) => {
+               // console.log(t.completenessIndex);
                 console.log(t.completenessIndex);
         });
 
@@ -65,10 +67,17 @@ function buildCompletenessIndex(trader:TraderProfile) {
 
         for(const key of Object.keys(trader)){
             const prop = (trader as any)[key];
-            if (prop && WEIGHTS_OF_COMP_INDEX[key]) 
-                currentIndex += WEIGHTS_OF_COMP_INDEX[key];
+            if (prop && WEIGHTS_OF_COMP_INDEX[key]) {
+                if (Array.isArray(prop)) {
+                    if ((prop as []).length > 0)
+                        currentIndex += WEIGHTS_OF_COMP_INDEX[key];
+                }
+                else if (prop.toString().trim().length > 0)
+                   currentIndex += WEIGHTS_OF_COMP_INDEX[key];
+            }   
         }
 
-        trader.completenessIndex = 100 / MAX_COMP_INDEX * currentIndex;
+        // calculates the ratio depends on the max possible score
+        trader.completenessIndex = 100 / MAX_COMP_SCORE * currentIndex;
     }
 }

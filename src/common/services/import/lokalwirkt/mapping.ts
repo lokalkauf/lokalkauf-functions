@@ -36,6 +36,10 @@ export function mapToTrader(lokalwirktModel:any[]) {
                 street: lw.address,
                 telephone: lw.phone,
                 homepage: lw.website,
+                openingTime: getOpeningTime(lw["opening-time"]),
+                osm_id: lw.osm_id,
+                osm_category: getOSMCategories(lw.category),
+                licence : lw.licence,
                 confirmedLocation : [Number(lw.lat), Number(lw.lon)],
                 storeType: mapToTraderCategory(lw.category),
                 status: TraderProfileStatus.IMPORTED
@@ -69,7 +73,33 @@ export function mapToTraderCategory(category: any) {
     return out;
 }
 
+function getOSMCategories (category: any) {
+    if (category && category.length > 0) {
+        return (category as []).map((c: any) => {
+            return {
+                slug: c.slug,
+                name: c.name
+            }
+        })
+    }
 
+    return [];
+}
+
+function getOpeningTime(openingTime:any[]) {
+
+    if (openingTime && openingTime.length > 0) {
+        return openingTime.map(o => {
+            return {
+                weekday: o.weekday,
+                open: o.open,
+                close: o.close                
+            }
+        })
+    }
+
+    return [];
+} 
 
 // "community_centre", -
 // "beverages", x
