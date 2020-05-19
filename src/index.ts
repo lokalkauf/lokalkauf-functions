@@ -18,6 +18,7 @@ const syncLocationsOnTradersChange = require('./triggers/syncLocationsOnTradersC
 
 
 const backupFirestoreDatabaseToStorage = require('./jobs/backupFirestoreDatabaseToStorage');
+const insightsBot = require('./jobs/insights');
 
 
 exports.sendGrid = sendGrid.sendGrid;
@@ -32,3 +33,4 @@ exports.serveTraderSitemap = serveTraderSitemap.serveTraderSitemap;
 exports.serveBaseSitemap = serveBaseSitemap.serveBaseSitemap;
 exports.locationByDistance = locationByDistance.locationByDistance;
 exports.syncLocationsOnTradersChange = syncLocationsOnTradersChange.syncLocationsOnTradersChange;
+exports.insightsBot = insightsBot.insights;
