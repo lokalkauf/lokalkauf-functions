@@ -26,7 +26,7 @@ export async function resize(max_width: number, max_height: number, object: any)
     // Get the file name.
     const fileName = path.basename(filePath);
     // Exit if the image is already a thumbnail.
-    if (fileName.startsWith('thumb_')) {
+    if (fileName.startsWith('thumb_') || fileName.includes('/thumbs/')) {
         console.log('Already a Thumbnail.');
         return null;
     }
