@@ -25,8 +25,7 @@ async function resizeImages() {
                 }
                 else {
                     console.log('Generate new thumbnail')
-                    resizeService.resize(max_width, max_height,
-                        { 'name': file.name, 'bucket': file.bucket.name });
+                    resizeService.resize(max_width, max_height, { 'name': file.name, 'bucket': file.bucket.name }).then().catch();
                 }
             });
         }
