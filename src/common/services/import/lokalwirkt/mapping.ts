@@ -1,4 +1,5 @@
 import { TraderProfile, TraderProfileStatus } from "../../../models/traderProfile";
+import moment = require("moment");
 
 const CATEGORIES: any = {
     "blumengarten" : ["florist", "garden_centre", "garden_furniture"],
@@ -31,6 +32,9 @@ export function mapToTrader(lokalwirktModel:any[]) {
         for(const lw of lokalwirktModel) {
             const trader = {
                 businessname: lw.name,
+                description: lw.description,
+                ownerFirstname: lw.firstname,
+                ownerLastname: lw.lastname,
                 postcode: lw.postalcode,
                 city: lw.locality,
                 street: lw.address,
@@ -39,6 +43,7 @@ export function mapToTrader(lokalwirktModel:any[]) {
                 openingTime: getOpeningTime(lw["opening-time"]),
                 osm_id: lw.osm_id,
                 osm_category: getOSMCategories(lw.category),
+                osm_modified: moment(lw.modified).unix(),
                 licence : lw.licence,
                 confirmedLocation : [Number(lw.lat), Number(lw.lon)],
                 storeType: mapToTraderCategory(lw.category),

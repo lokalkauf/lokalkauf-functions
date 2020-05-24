@@ -1,6 +1,8 @@
-// import * as traders from '../../repositories/traders.repository';
+import * as tradersRepo from '../../repositories/traders.repository';
 import admin = require('firebase-admin');
 import { TraderProfile } from '../../models/traderProfile';
+
+
 
 
 
@@ -53,12 +55,15 @@ export async function importData(app: admin.app.App, source: string, options: an
         const sortedTraders = (traders as []).sort((a: any, b: any) => a.completenessIndex - b.completenessIndex);
         sortedTraders.forEach((t:any) => {
                // console.log(t.completenessIndex);
-                console.log(t.completenessIndex);
+                // console.log(t);
         });
+
+        await tradersRepo.upsert(app, sortedTraders.reverse()[0]);        
 
         console.log('items: ' + traders.length)
     }
 }
+
 
 function buildCompletenessIndex(trader:TraderProfile) {
     let currentIndex = 0;

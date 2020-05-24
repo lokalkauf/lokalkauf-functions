@@ -22,6 +22,7 @@ export interface TraderProfile {
     openingTime: any[];
     osm_id: string;
     osm_category: any;
+    osm_modified: number;
     licence: string;
     storeType: {
       gastronomie: boolean;

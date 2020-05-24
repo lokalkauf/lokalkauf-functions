@@ -1,4 +1,5 @@
 const axios = require('axios');
+const osmtogeojson = require('osmtogeojson');
 import * as fs from 'fs';
 import { mapToTrader } from './mapping';
 import * as categories from './categories';
@@ -43,11 +44,19 @@ export async function loadData(options: any) {
                 data = cache[d.properties.id];
             } else {
                 data = await loadDetails(d.properties.id);
-                cache[d.properties.id] = data;
-                fs.writeFileSync(FILE_BUFFER, JSON.stringify(cache), {encoding:'utf8'});
+                await updateCache(d.properties.id, cache, data);
             }
 
             if (data) {
+
+                // get original osm data...
+                if ((!data.osm_original || data.osm_original.ERROR) && data.data.osm_id) {
+                    data.osm_original = await loadOriginalOSM_Data(data.data.osm_id, data.data);
+                    await updateCache(d.properties.id, cache, data);
+                }
+
+                // fill addresses
+                await fillAddresses(data);
 
                 items.push(data.data);
             }
@@ -73,3 +82,61 @@ export async function loadData(options: any) {
 
     return [];    
 }
+
+
+
+async function updateCache(itemID:string, cache: any, data: any) {
+    cache[itemID] = data;
+    fs.writeFileSync(FILE_BUFFER, JSON.stringify(cache), {encoding:'utf8'});
+}
+
+async function fillAddresses(data: any) {
+
+    if (data && data.data ) {
+
+        if (!data.data.housenumber && 
+            data.osm_original?.features?.properties && 
+            data.osm_original.features.properties['addr:housenumber']) {
+
+            data.data.housenumber = data.osm_original.features.properties['addr:housenumber'];
+        
+        }
+
+        // if (!data.data.address || !data.data.postalcode || !data.data.locality) {
+
+        // }
+
+        // if (data.osm_original) {
+        //     data.data.address = data.data.address = 
+        // }
+    }
+}
+
+async function loadOriginalOSM_Data(osmID: string, data:any) {
+    let result = await loadOSMData('node', osmID);
+
+    if (!result)
+        result = await loadOSMData('relation', osmID);
+
+    if (!result)
+        result = await loadOSMData('way', osmID);
+
+    return result;
+}
+
+async function loadOSMData(type: string, osmID:string) {
+    try {
+        const response = await axios.get('https://www.openstreetmap.org/api/0.6/' + type + '/' + osmID);
+        
+        if (response && response.data) {
+            console.log(response.data);
+            return osmtogeojson(response.data);
+        }
+
+        return null;
+    } catch(e) {       
+        console.log('[' + type + '] error while loading original osm data.' + e, osmID);
+        return null;
+    }    
+}
+
