@@ -19,7 +19,7 @@ const syncLocationsOnTradersChange = require('./triggers/syncLocationsOnTradersC
 
 const backupFirestoreDatabaseToStorage = require('./jobs/backupFirestoreDatabaseToStorage');
 const insightsBot = require('./jobs/insights');
-
+const uploadImage = require('./triggers/uploadImage')
 
 exports.sendGrid = sendGrid.sendGrid;
 exports.sendCustomVerifyMail = sendCustomVerifyMail.sendCustomVerifyMail;
@@ -34,3 +34,4 @@ exports.serveBaseSitemap = serveBaseSitemap.serveBaseSitemap;
 exports.locationByDistance = locationByDistance.locationByDistance;
 exports.syncLocationsOnTradersChange = syncLocationsOnTradersChange.syncLocationsOnTradersChange;
 exports.insightsBot = insightsBot.insights;
+exports.uploadImage = uploadImage.resizeImage
