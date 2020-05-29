@@ -1,5 +1,6 @@
 import { TraderEntity } from '../models/traderEntity';
 import admin = require('firebase-admin');
+import { v4 as uuid } from 'uuid';
 import { TraderProfile } from '../models/traderProfile';
 const wikimedia = require("wikimedia-commons-file-path");
 
@@ -26,6 +27,19 @@ export async function upsert(app: admin.app.App = admin.app(), trader: Partial<T
         await importWikimediaImage((trader as any).wikimedia_img);
 }
 
+export async function import_osm(app: admin.app.App = admin.app(), trader: Partial<TraderProfile>) { 
+
+    if (!trader.id)
+        trader.id = uuid();
+
+    await app.firestore()
+             .collection('OSM')
+             .doc(trader.id)
+             .set(trader, { merge:true })
+             .catch((e) => {
+                console.log(e);
+             });
+}
 
 
 async function importWikimediaImage(fileName: string) {

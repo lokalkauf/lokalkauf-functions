@@ -30,7 +30,7 @@ export function mapToTrader(lokalwirktModel:any[]) {
     if (lokalwirktModel && lokalwirktModel.length > 0) {
         
         for(const lw of lokalwirktModel) {
-            const trader = {
+            const trader:Partial<TraderProfile> = {
                 businessname: lw.name,
                 description: lw.description,
                 ownerFirstname: lw.firstname,
@@ -39,6 +39,7 @@ export function mapToTrader(lokalwirktModel:any[]) {
                 city: lw.locality,
                 street: lw.address,
                 telephone: lw.phone,
+                email: lw.email,
                 homepage: lw.website,
                 openingTime: getOpeningTime(lw["opening-time"]),
                 osm_id: lw.osm_id,
@@ -49,6 +50,9 @@ export function mapToTrader(lokalwirktModel:any[]) {
                 storeType: mapToTraderCategory(lw.category),
                 status: TraderProfileStatus.IMPORTED
             };
+
+            if (lw.housenumber)
+                trader.number = lw.housenumber;
 
             if (trader.storeType)
                 out.push(trader);

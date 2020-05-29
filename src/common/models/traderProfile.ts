@@ -23,6 +23,7 @@ export interface TraderProfile {
     osm_id: string;
     osm_category: any;
     osm_modified: number;
+    import_date: number;
     licence: string;
     storeType: {
       gastronomie: boolean;

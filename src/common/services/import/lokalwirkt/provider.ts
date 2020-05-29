@@ -38,8 +38,6 @@ export async function loadData(options: any) {
         for(const d of response.data.features as any[]) {
             let data:any;
 
-            console.log(d.properties.id);
-
             if (cache[d.properties.id]) {
                 data = cache[d.properties.id];
             } else {
@@ -94,21 +92,36 @@ async function fillAddresses(data: any) {
 
     if (data && data.data ) {
 
-        if (!data.data.housenumber && 
-            data.osm_original?.features?.properties && 
-            data.osm_original.features.properties['addr:housenumber']) {
-
-            data.data.housenumber = data.osm_original.features.properties['addr:housenumber'];
-        
+        if (!data.data.housenumber && data.osm_original) { 
+            
+            if (data.osm_original?.features && 
+                data.osm_original?.features.length > 0  && 
+                data.osm_original?.features[0].properties && 
+                data.osm_original.features[0].properties['addr:housenumber']) {
+                    data.data.housenumber = data.osm_original.features[0].properties['addr:housenumber'];
+                    data.data.address = data.osm_original.features[0].properties['addr:street'];
+                }
         }
 
-        // if (!data.data.address || !data.data.postalcode || !data.data.locality) {
+        if (!data.data.postalcode && data.osm_original) { 
+            
+            if (data.osm_original?.features && 
+                data.osm_original?.features.length > 0  && 
+                data.osm_original?.features[0].properties && 
+                data.osm_original.features[0].properties['addr:postcode']) {
+                    data.data.postalcode = data.osm_original.features[0].properties['addr:postcode'];
+                }
+        }        
 
-        // }
-
-        // if (data.osm_original) {
-        //     data.data.address = data.data.address = 
-        // }
+        if (!data.data.locality && data.osm_original) { 
+            
+            if (data.osm_original?.features && 
+                data.osm_original?.features.length > 0  && 
+                data.osm_original?.features[0].properties && 
+                data.osm_original.features[0].properties['addr:city']) {
+                    data.data.locality = data.osm_original.features[0].properties['addr:city'];
+                }
+        }
     }
 }
 
