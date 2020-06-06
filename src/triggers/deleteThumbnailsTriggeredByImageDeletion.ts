@@ -6,25 +6,32 @@ exports.deleteThumbnailsTriggeredByImageDeletion = functions.storage
     .onDelete(async (snapshot, _context) => {
         //console.log('#######');
         //console.log('#######' + snapshot.name);
+        let imagePath = "";
+        if (snapshot.name && snapshot.name.indexOf('/BusinessImages/') > -1) {
+            imagePath = snapshot.name.substring(0, snapshot.name.indexOf('/BusinessImages/')) + '/BusinessImages/';
+        }
+        else if (snapshot.name && snapshot.name.indexOf('/ProductImages/') > -1) {
+            const productID = snapshot.name.split('/ProductImages/')[1].split('/')[0];
+            imagePath = snapshot.name.substring(0, snapshot.name.indexOf('/ProductImages/')) + "/ProductImages/" + productID + "/";
+        }
 
         if (
             snapshot.name &&
-            snapshot.name.indexOf('/BusinessImages/') > -1 &&
-            snapshot.name.indexOf('/BusinessImages/thumbs') < 0
+            snapshot.name.indexOf('thumb_224x224_') < 0 &&
+            snapshot.name.indexOf('/BusinessImages/thumbs') < 0 &&
+            (snapshot.name.indexOf('/BusinessImages/') > -1 ||
+                snapshot.name.indexOf('/ProductImages/') > -1)
         ) {
-            const a = snapshot.name.indexOf('/BusinessImages/');
 
             console.log(`delete thumbnail of ${snapshot.name}`);
 
             let thumbnail: string;
 
             try {
-                let name = snapshot.name.substring(a + '/BusinessImages/'.length);
+                let name = snapshot.name.split('/')[snapshot.name.split('/').length - 1];
+                name = 'thumb_224x224_' + name + '.jpg';
 
-                name = 'thumb_224x224_' + name + '.jpg'
-
-                thumbnail =
-                    snapshot.name.substring(0, a) + '/BusinessImages/' + name;
+                thumbnail = imagePath + name;
 
                 admin
                     .storage()
