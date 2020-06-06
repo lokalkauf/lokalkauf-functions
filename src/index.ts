@@ -13,6 +13,7 @@ const locationByDistance = require('./api/locationByDistance');
 const sendCustomVerifyMail = require('./triggers/sendCustomVerifyMail');
 const deleteThumbnailsTriggeredByImageDeletion = require('./triggers/deleteThumbnailsTriggeredByImageDeletion');
 const deleteUser = require('./triggers/deleteUser');
+const deleteProduct = require('./triggers/deleteProduct');
 const syncLocationsOnTradersChange = require('./triggers/syncLocationsOnTradersChange');
 
 
@@ -23,6 +24,7 @@ exports.sendGrid = sendGrid.sendGrid;
 exports.sendCustomVerifyMail = sendCustomVerifyMail.sendCustomVerifyMail;
 exports.deleteThumbnailsTriggeredByImageDeletion = deleteThumbnailsTriggeredByImageDeletion.deleteThumbnailsTriggeredByImageDeletion;
 exports.deleteUser = deleteUser.deleteUser;
+exports.deleteProduct = deleteProduct.deleteProduct;
 exports.backupFirestoreDatabaseToStorage = backupFirestoreDatabaseToStorage.backupFirestoreDatabaseToStorage;
 exports.traderDetail = traderDetail.traderDetail;
 exports.serveSitemapIndex = serveSitemapIndex.serveSitemapIndex;
