@@ -11,7 +11,6 @@ const locationByDistance = require('./api/locationByDistance');
 
 
 const sendCustomVerifyMail = require('./triggers/sendCustomVerifyMail');
-const checkFileNumberLimit = require('./triggers/checkFileNumberLimit');
 const deleteThumbnailsTriggeredByImageDeletion = require('./triggers/deleteThumbnailsTriggeredByImageDeletion');
 const deleteUser = require('./triggers/deleteUser');
 const syncLocationsOnTradersChange = require('./triggers/syncLocationsOnTradersChange');
@@ -22,7 +21,6 @@ const uploadImage = require('./triggers/uploadImage')
 
 exports.sendGrid = sendGrid.sendGrid;
 exports.sendCustomVerifyMail = sendCustomVerifyMail.sendCustomVerifyMail;
-exports.checkFileNumberLimit = checkFileNumberLimit.checkFileNumberLimit;
 exports.deleteThumbnailsTriggeredByImageDeletion = deleteThumbnailsTriggeredByImageDeletion.deleteThumbnailsTriggeredByImageDeletion;
 exports.deleteUser = deleteUser.deleteUser;
 exports.backupFirestoreDatabaseToStorage = backupFirestoreDatabaseToStorage.backupFirestoreDatabaseToStorage;
