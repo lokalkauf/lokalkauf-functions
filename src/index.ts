@@ -1,5 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
+
 admin.initializeApp(functions.config().firebase);
 
 const sendGrid = require('./api/sendGrid');
@@ -19,6 +20,7 @@ const syncLocationsOnTradersChange = require('./triggers/syncLocationsOnTradersC
 
 const backupFirestoreDatabaseToStorage = require('./jobs/backupFirestoreDatabaseToStorage');
 const uploadImage = require('./triggers/uploadImage')
+const algoliaIndexing = require('./triggers/algoliaIndexing');
 
 exports.sendGrid = sendGrid.sendGrid;
 exports.sendCustomVerifyMail = sendCustomVerifyMail.sendCustomVerifyMail;
@@ -32,4 +34,7 @@ exports.serveTraderSitemap = serveTraderSitemap.serveTraderSitemap;
 exports.serveBaseSitemap = serveBaseSitemap.serveBaseSitemap;
 exports.locationByDistance = locationByDistance.locationByDistance;
 exports.syncLocationsOnTradersChange = syncLocationsOnTradersChange.syncLocationsOnTradersChange;
-exports.uploadImage = uploadImage.resizeImage
+exports.uploadImage = uploadImage.resizeImage;
+exports.createAlgoliaIndex = algoliaIndexing.createAlgoliaIndex;
+exports.updateAlgoliaIndex = algoliaIndexing.updateAlgoliaIndex;
+exports.deleteAlgoliaIndex = algoliaIndexing.deleteAlgoliaIndex;
