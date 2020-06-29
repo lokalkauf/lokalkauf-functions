@@ -37,7 +37,7 @@ export const updateAlgoliaIndex = functions.firestore
             trader.objectID = snap.after.id;
             return index.saveObject(trader);
         }
-        // Delete index if status is changed
+        // Delete index if status gets changed
         else if (trader && b_trader && trader.status !== 'PUBLIC' && b_trader.status === 'PUBLIC') {
             index.deleteObject(snap.after.id)
             return null;
