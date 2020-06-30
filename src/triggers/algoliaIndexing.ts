@@ -19,6 +19,8 @@ export const createAlgoliaIndex = functions.firestore
         if (trader && trader.status === 'PUBLIC') {
             // Add an 'objectID' field which Algolia requires
             trader.objectID = snap.id;
+            trader._geoloc.lat = trader.confirmedLocation[0];
+            trader._geoloc.lng = trader.confirmedLocation[1];
             return index.saveObject(trader);
         }
         else {
@@ -30,11 +32,14 @@ export const createAlgoliaIndex = functions.firestore
 export const updateAlgoliaIndex = functions.firestore
     .document('/Traders/{traderId}')
     .onUpdate(async (snap, _) => {
-        const trader = snap.after.data();
+        let trader: any;
+        trader = snap.after.data();
         const b_trader = snap.before.data();
         if (trader && trader.status === 'PUBLIC') {
             // Add an 'objectID' field which Algolia requires
             trader.objectID = snap.after.id;
+            trader._geoloc = { 'lat': Number(trader.confirmedLocation[0]), 'lng': Number(trader.confirmedLocation[1]) };
+            console.log(trader);
             return index.saveObject(trader);
         }
         // Delete index if status gets changed

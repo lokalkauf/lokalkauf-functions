@@ -19,7 +19,14 @@ async function uploadAlgoliaIndecies() {
 
     const traders = await admin.firestore().collection('Traders').get();
     traders.docs.forEach(async doc => {
-        const trader = doc.data();
+        let trader: any;
+        trader = doc.data();
+        if (trader.hasOwnProperty('confirmedLocation')) {
+            trader._geoloc = {
+                'lat': Number(trader.confirmedLocation[0]),
+                'lng': Number(trader.confirmedLocation[1])
+            };
+        }
         trader.objectID = doc.id;
         if (trader.status === 'PUBLIC') {
             index.saveObject(trader);
