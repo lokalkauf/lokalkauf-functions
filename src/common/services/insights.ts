@@ -58,9 +58,16 @@ export async function traders(app: admin.app.App) : Promise<TradersInsights> {
         const tradersChartURL = await quickchart.createDoughnutUrl('curent Traders', result.total, data2.labels, data2.data);
         
 
-        const someTraders = all.filter((t: TraderEntity) => moment(t.createdAt).diff(Date.now(), 'days') > -10)
-                               .sort((a,b) => a.createdAt - b.createdAt).reverse().filter(t => t.soMeShare && t.soMeShare === true)
-                               .map(t => `<https://lokalkauf.org/trader-detail/${t.id}|${t.postcode} ${t.city} - ${t.businessname}>  (created: ${moment(t.createdAt).fromNow()})`).join('\n');
+        // const someTraders = all.filter((t: TraderEntity) => moment(t.createdAt).diff(Date.now(), 'days') > -100)   
+        //                        .sort((a,b) => a.createdAt - b.createdAt).reverse().filter(t => t.soMeShare && t.soMeShare === true)  
+        //                        .map(t => `<https://lokalkauf.org/trader-detail/${t.id}|${t.postcode} ${t.city} - ${t.businessname}>  (created: ${moment(t.createdAt).fromNow()})`).join('\n');  
+
+        // updated...
+        const someTraders = all.filter((t: TraderEntity) => moment(t.updatedAt).diff(Date.now(), 'days') > -15)
+                               .sort((a,b) => a.updatedAt - b.updatedAt).reverse().filter(t => t.soMeShare && t.soMeShare === true)
+                               .map(t => `<https://lokalkauf.org/trader-detail/${t.id}|${t.postcode} ${t.city} - ${t.businessname}>  (updated: ${moment(t.updatedAt).fromNow()})`).join('\n');                               
+                              
+                     
 
                                
         await slack.sendMessage(app, "pls. some allowed: \n\n" + someTraders);        

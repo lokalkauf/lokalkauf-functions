@@ -11,5 +11,6 @@ export interface TraderEntity {
     soMeShare: boolean;
     storeType: any;
 
+    updatedAt: number;
     createdAt: number;
 }

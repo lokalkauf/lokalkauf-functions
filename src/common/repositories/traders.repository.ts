@@ -10,6 +10,7 @@ export async function loadTraders(app: admin.app.App = admin.app()) : Promise<Tr
         const data = d.data();
         data.id = d.id;
         data.createdAt = d.createTime.toDate().getTime();
+        data.updatedAt = d.updateTime.toDate().getTime();
         return data as TraderEntity;
     });
 }
