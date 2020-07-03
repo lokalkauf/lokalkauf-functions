@@ -1,10 +1,10 @@
 import * as tradersRepo from '../../repositories/traders.repository';
 import admin = require('firebase-admin');
-import { TraderProfile } from '../../models/traderProfile';
+import { TraderProfile, TraderProfileStatus } from '../../models/traderProfile';
 import moment = require('moment');
 
 
-
+let adminApp: admin.app.App;
 
 
 const WEIGHTS_OF_COMP_INDEX: any =  {
@@ -37,8 +37,11 @@ function getServiceProvider(source: string){
 
 export async function importData(app: admin.app.App, source: string, options: any) {
 
+    if (!adminApp)
+        adminApp = app;
+
     const provider = getServiceProvider(source); 
-    const traders = await provider.loadData(options);
+    const traders = await provider.loadData(options, app);
 
     if (traders && traders.length > 0) {
 
@@ -49,23 +52,40 @@ export async function importData(app: admin.app.App, source: string, options: an
                 buildCompletenessIndex(trader);
 
                 
-                console.log(trader);
-                await tradersRepo.import_osm(app, trader);
+                // console.log(trader);
+                // await tradersRepo.import_osm(app, trader);
             } catch(e) {
                 console.log('errow while importing: ' + (trader as any).businessname, e);
             }
         }
 
-        const sortedTraders = (traders as []).sort((a: any, b: any) => a.completenessIndex - b.completenessIndex);
-        sortedTraders.forEach((t:any) => {
-               console.log(t.completenessIndex);
-                // console.log(t);
-        });
+        const trToImport = (traders as []).filter((t: TraderProfile) => t.completenessIndex > 30 && !t.storeType.handwerk);
+
+        console.log('all    : ' + traders.length + '  \nimport : ' + trToImport.length);
+
+        for(const ti of trToImport) {
+            (ti as TraderProfile).status = TraderProfileStatus.PUBLIC;
+            await tradersRepo.import_osm(app, ti);
+        }
+
+        // const sortedTraders = (traders as []).sort((a: any, b: any) => a.completenessIndex - b.completenessIndex);
+        // sortedTraders.forEach((t:any) => {
+        //        console.log(t.completenessIndex);
+        //         // console.log(t);
+        // });
 
         // await tradersRepo.upsert(app, sortedTraders.reverse()[0]);        
 
-        console.log('items: ' + traders.length)
+        console.log('items: ' + trToImport.length)
     }
+}
+
+export async function putItemToCache(item: any, app: admin.app.App) { 
+    await tradersRepo.import_osmcache_item(item, adminApp);
+}
+
+export async function getItemFromCache(itemID: any, app: admin.app.App) { 
+    return await tradersRepo.load_osmcache_item(itemID, adminApp);
 }
 
 

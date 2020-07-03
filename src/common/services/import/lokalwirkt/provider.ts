@@ -1,10 +1,14 @@
 const axios = require('axios');
 const osmtogeojson = require('osmtogeojson');
-import * as fs from 'fs';
 import { mapToTrader } from './mapping';
 import * as categories from './categories';
+import * as importService from '../import.service';
+import admin = require('firebase-admin');
 
-const FILE_BUFFER = '/tmp/lokalkauf/lokalwirkt.json';
+//    import * as fs from 'fs';
+//    const FILE_BUFFER = '/tmp/lokalkauf/lokalwirkt.json';
+
+
 
 export async function loadDetails(id: string) {
     let out:any;
@@ -22,27 +26,25 @@ export async function loadDetails(id: string) {
    
 }
 
-export async function loadData(options: any) {
+export async function loadData(options: any, app: admin.app.App) {
     const response = await axios.get('https://lokalwirkt.de/api/stores/geo?region-slug=' + options.region);
     const items: any[] = [];
 
-    if (!fs.existsSync(FILE_BUFFER)) {
-        fs.writeFileSync(FILE_BUFFER, '{}', {encoding: 'utf8'});
-    }
-
-    const file_content = fs.readFileSync(FILE_BUFFER, {encoding:'utf8'});
-    const cache = JSON.parse(file_content);
-    
+    // const cache = await loadCache();    
     if (response && response.data && response.data.features &&  response.data.features.length > 0) {
 
         for(const d of response.data.features as any[]) {
             let data:any;
 
-            if (cache[d.properties.id]) {
-                data = cache[d.properties.id];
+            const cachedItem = await importService.getItemFromCache(d.properties.id, app);
+            
+            if (cachedItem) {
+                data = cachedItem;
             } else {
-                data = await loadDetails(d.properties.id);
-                await updateCache(d.properties.id, cache, data);
+                data = await loadDetails(d.properties.id);    
+                data.lw_id = d.properties.id;            
+                await importService.putItemToCache(data, app);
+                //await updateCache(d.properties.id, cache, data);
             }
 
             if (data) {
@@ -50,7 +52,8 @@ export async function loadData(options: any) {
                 // get original osm data...
                 if ((!data.osm_original || data.osm_original.ERROR) && data.data.osm_id) {
                     data.osm_original = await loadOriginalOSM_Data(data.data.osm_id, data.data);
-                    await updateCache(d.properties.id, cache, data);
+                    await importService.putItemToCache(data, app);                    
+                    // await updateCache(d.properties.id, cache, data);
                 }
 
                 // fill addresses
@@ -83,10 +86,25 @@ export async function loadData(options: any) {
 
 
 
-async function updateCache(itemID:string, cache: any, data: any) {
-    cache[itemID] = data;
-    fs.writeFileSync(FILE_BUFFER, JSON.stringify(cache), {encoding:'utf8'});
-}
+// async function updateCache(itemID:string, cache: any, data: any) {
+
+
+//     cache[itemID] = data;
+//     fs.writeFileSync(FILE_BUFFER, JSON.stringify(cache), {encoding:'utf8'});
+// }
+
+// async function loadCache() {
+
+// //    return await tradersRepo.load_osmcache();
+
+//     if (!fs.existsSync(FILE_BUFFER)) {
+//         fs.mkdirSync('/tmp/lokalkauf');
+//         fs.writeFileSync(FILE_BUFFER, '{}', {encoding: 'utf8'});
+//     }
+
+//     const file_content = fs.readFileSync(FILE_BUFFER, {encoding:'utf8'});
+//     return JSON.parse(file_content);    
+// }
 
 async function fillAddresses(data: any) {
 
