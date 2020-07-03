@@ -17,6 +17,7 @@
     "@sendgrid/mail": "^7.0.0",
     "@slack/webhook": "^5.0.3",
     "@types/tmp": "^0.2.0",
+    "@types/uuid": "^8.0.0",
     "axios": "^0.19.2",
     "csvtojson": "^2.0.10",
     "d3-node": "^2.2.1",
@@ -28,6 +29,9 @@
     "javascript-stringify": "^2.0.1",
     "mkdirp": "^1.0.4",
     "moment": "^2.25.2",
+    "osmtogeojson": "^3.0.0-beta.4",
+    "uuid": "^8.1.0",
+    "wikimedia-commons-file-path": "^1.2.0",
     "sharp": "^0.25.2",
     "tmp": "^0.2.1"
   },

@@ -1,4 +1,5 @@
 import { TraderProfile, TraderProfileStatus } from "../../../models/traderProfile";
+import moment = require("moment");
 
 const CATEGORIES: any = {
     "blumengarten" : ["florist", "garden_centre", "garden_furniture"],
@@ -29,17 +30,29 @@ export function mapToTrader(lokalwirktModel:any[]) {
     if (lokalwirktModel && lokalwirktModel.length > 0) {
         
         for(const lw of lokalwirktModel) {
-            const trader = {
+            const trader:Partial<TraderProfile> = {
                 businessname: lw.name,
+                description: lw.description,
+                ownerFirstname: lw.firstname,
+                ownerLastname: lw.lastname,
                 postcode: lw.postalcode,
                 city: lw.locality,
                 street: lw.address,
                 telephone: lw.phone,
+                email: lw.email,
                 homepage: lw.website,
+                openingTime: getOpeningTime(lw["opening-time"]),
+                osm_id: lw.osm_id,
+                osm_category: getOSMCategories(lw.category),
+                osm_modified: moment(lw.modified).unix(),
+                licence : lw.licence,
                 confirmedLocation : [Number(lw.lat), Number(lw.lon)],
                 storeType: mapToTraderCategory(lw.category),
                 status: TraderProfileStatus.IMPORTED
             };
+
+            if (lw.housenumber)
+                trader.number = lw.housenumber;
 
             if (trader.storeType)
                 out.push(trader);
@@ -69,7 +82,33 @@ export function mapToTraderCategory(category: any) {
     return out;
 }
 
+function getOSMCategories (category: any) {
+    if (category && category.length > 0) {
+        return (category as []).map((c: any) => {
+            return {
+                slug: c.slug,
+                name: c.name
+            }
+        })
+    }
 
+    return [];
+}
+
+function getOpeningTime(openingTime:any[]) {
+
+    if (openingTime && openingTime.length > 0) {
+        return openingTime.map(o => {
+            return {
+                weekday: o.weekday,
+                open: o.open,
+                close: o.close                
+            }
+        })
+    }
+
+    return [];
+} 
 
 // "community_centre", -
 // "beverages", x

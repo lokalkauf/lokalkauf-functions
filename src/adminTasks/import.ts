@@ -6,8 +6,8 @@ async function importData(app: admin.app.App) {
     console.log('start import...');
 
     const options = {
-        region: 'bonn',
-        file: '/tmp/lokalkauf/import.csv'
+        region: 'unna'
+        // , file: '/tmp/lokalkauf/import.csv'
     }
     
     await importService.importData(app, 'lokalwirkt', options);
