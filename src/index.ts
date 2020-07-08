@@ -19,6 +19,7 @@ const syncLocationsOnTradersChange = require('./triggers/syncLocationsOnTradersC
 
 
 const backupFirestoreDatabaseToStorage = require('./jobs/backupFirestoreDatabaseToStorage');
+const insightsBot = require('./jobs/insights');
 const uploadImage = require('./triggers/uploadImage')
 const algoliaIndexing = require('./triggers/algoliaIndexing');
 
@@ -38,3 +39,5 @@ exports.uploadImage = uploadImage.resizeImage;
 exports.createAlgoliaIndex = algoliaIndexing.createAlgoliaIndex;
 exports.updateAlgoliaIndex = algoliaIndexing.updateAlgoliaIndex;
 exports.deleteAlgoliaIndex = algoliaIndexing.deleteAlgoliaIndex;
+exports.insightsBot = insightsBot.insights;
+exports.uploadImage = uploadImage.resizeImage
