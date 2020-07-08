@@ -12,8 +12,8 @@ export enum Stage {
     PRODUCTION = "production"
 }
 
-export function getBackupBucket(stage: Stage){
-    switch(stage) {
+export function getBackupBucket(stage: Stage) {
+    switch (stage) {
         case Stage.DEVELOPMENT:
             return 'gs://lokalkauf-st-backup-bucket';
         case Stage.INTEGRATION:
@@ -24,39 +24,39 @@ export function getBackupBucket(stage: Stage){
 }
 
 export async function loadApp(stageName?: Stage) {
-    const stage = (stageName)? stageName : process.argv[2] as Stage;
+    const stage = (stageName) ? stageName : process.argv[2] as Stage;
 
-    switch(stage) {
+    switch (stage) {
         case Stage.DEVELOPMENT:
-            return await loadAdminApp(devStageSecret, 
+            return await loadAdminApp(devStageSecret,
                 "https://lokalkauf-security-testing.firebaseio.com",
                 "gs://lokalkauf-security-testing.appspot.com");
         case Stage.INTEGRATION:
-            return await loadAdminApp(intStageSecret, 
+            return await loadAdminApp(intStageSecret,
                 "https://lokalkauf-staging.firebaseio.com",
-                "gs://lokalkauf-staging.appspot.com"); 
+                "gs://lokalkauf-staging.appspot.com");
         case Stage.PRODUCTION:
-            return await loadAdminApp(prodStageSecret, 
+            return await loadAdminApp(prodStageSecret,
                 "https://lokalkauf-271814.firebaseio.com",
-                "gs://lokalkauf-271814.appspot.com");   
+                "gs://lokalkauf-271814.appspot.com");
         default:
             throw new Error(`
 
                 ${stage} is an unknown Stage! available stages are: ${Object.keys(Stage)}
             
-            `);                    
-     }
+            `);
+    }
 }
 
 export function callAsync(...fncts: Function[]) {
 
     try {
         new Promise(async (res, rej) => {
-            for(const func of fncts) {
+            for (const func of fncts) {
                 try {
                     await func(await loadApp());
                 } catch (e) {
-                    console.log('ERROR occured: ' + e + '\n\n', e);                    
+                    console.log('ERROR occured: ' + e + '\n\n', e);
                     //rej(e);
                     break;
                 }
@@ -65,12 +65,12 @@ export function callAsync(...fncts: Function[]) {
             res();
         });
 
-    } catch(err) {
+    } catch (err) {
         console.log('error occured: ' + err);
     }
 }
 
-async function loadFunctionsConfig(){
+export async function loadFunctionsConfig() {
 
     return new Promise((resolve, reject) => {
         let out = {};
@@ -89,7 +89,7 @@ async function loadFunctionsConfig(){
     });
 }
 
-async function loadAdminApp(secret:any, dbUrl: string, storageBucketUrl: string) {
+async function loadAdminApp(secret: any, dbUrl: string, storageBucketUrl: string) {
 
     const functionConfig = await loadFunctionsConfig();
 
