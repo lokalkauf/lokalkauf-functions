@@ -5,7 +5,7 @@ import { createIndex } from '../common/services/create.index';
 const ALGOLIA_ID = functions.config().algolia.app_id;
 const ALGOLIA_ADMIN_KEY = functions.config().algolia.api_key;
 // const ALGOLIA_SEARCH_KEY = functions.config().algolia.search_key;
-const ALGOLIA_INDEX_NAME = 'traders_st';
+const ALGOLIA_INDEX_NAME = functions.config().algolia.index_name;
 
 const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY);
 const index = client.initIndex(ALGOLIA_INDEX_NAME);
@@ -16,7 +16,7 @@ export const createAlgoliaIndex = functions.firestore
     // This is not necessary in the current implementation,
     // as the status cannot be public on create.
     // In case of automation this might be necessary.
-    const trader = await createIndex(snap.data());
+    const trader = await createIndex(snap);
     if (trader && trader.status === 'PUBLIC') {
       return index.saveObject(trader);
     }
@@ -30,7 +30,7 @@ export const updateAlgoliaIndex = functions.firestore
   .document('/Traders/{traderId}')
   .onUpdate(async (snap, _) => {
     let trader: any;
-    trader = await createIndex(snap.after.data());
+    trader = await createIndex(snap.after);
     const b_trader = snap.before.data();
     if (trader && trader.status === 'PUBLIC') {
       // Add an 'objectID' field which Algolia requires
