@@ -1,6 +1,6 @@
 import { TraderIndex } from '../models/traderIndex';
 
-export async function createIndex(doc: any) {
+export async function createIndex(doc: FirebaseFirestore.DocumentData) {
   const data = doc.data()
   const trader: TraderIndex = {
     objectID: doc.id,
