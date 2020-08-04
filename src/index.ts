@@ -22,6 +22,7 @@ const backupFirestoreDatabaseToStorage = require('./jobs/backupFirestoreDatabase
 const insightsBot = require('./jobs/insights');
 const uploadImage = require('./triggers/uploadImage')
 const algoliaIndexing = require('./triggers/algoliaIndexing');
+const publicBookmark = require('./triggers/publicBookmark');
 
 exports.sendGrid = sendGrid.sendGrid;
 exports.sendCustomVerifyMail = sendCustomVerifyMail.sendCustomVerifyMail;
@@ -40,4 +41,6 @@ exports.createAlgoliaIndex = algoliaIndexing.createAlgoliaIndex;
 exports.updateAlgoliaIndex = algoliaIndexing.updateAlgoliaIndex;
 exports.deleteAlgoliaIndex = algoliaIndexing.deleteAlgoliaIndex;
 exports.insightsBot = insightsBot.insights;
-exports.uploadImage = uploadImage.resizeImage
+exports.uploadImage = uploadImage.resizeImage;
+exports.updatePublicBookmark = publicBookmark.updatePublicBookmark;
+exports.deletePublicBookmark = publicBookmark.deletePublicBookmark;
