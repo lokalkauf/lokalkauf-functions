@@ -58,7 +58,8 @@ export async function traders(app: admin.app.App) : Promise<TradersInsights> {
         const tradersChartURL = await quickchart.createDoughnutUrl('curent Traders', result.total, data2.labels, data2.data);
         
 
-        const someTraders = all.sort((a,b) => a.createdAt - b.createdAt).reverse().filter(t => t.soMeShare && t.soMeShare === true)
+        const someTraders = all.filter((t: TraderEntity) => moment(t.createdAt).diff(Date.now(), 'days') > -10)
+                               .sort((a,b) => a.createdAt - b.createdAt).reverse().filter(t => t.soMeShare && t.soMeShare === true)
                                .map(t => `<https://lokalkauf.org/trader-detail/${t.id}|${t.postcode} ${t.city} - ${t.businessname}>  (created: ${moment(t.createdAt).fromNow()})`).join('\n');
 
                                
