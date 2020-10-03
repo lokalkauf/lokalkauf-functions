@@ -1,5 +1,5 @@
-import * as fs from "fs";
-import UUID from "pure-uuid";
+import * as admin from 'firebase-admin';
+import * as os from "os";
 import { OverlayOptions } from "sharp";
 const mkdirp = require("mkdirp");
 const path = require("path");
@@ -7,8 +7,8 @@ const sharp = require("sharp");
 
 const width = 224;
 const height = 224;
-const logoPath = "./sources/lokalkauf-logo.jpg";
-const logoPathBig = "./sources/lokalkauf-logo-big.jpg";
+const logoPath = "Merklisten/Logos/lokalkauf-logo.jpg";
+const logoPathBig = "Merklisten/Logos/lokalkauf-logo-big.jpg";
 
 interface Dimensions {
   width: number;
@@ -104,42 +104,78 @@ async function calculateBaseImageSize(imagePaths: string[]): Promise<Dimensions>
   return { width: width * 3, height: height * Math.ceil(imagePaths.length / 3) + (imagePaths.length % 3 === 0 ? height : 0) };
 }
 
-export async function imageBuilder(imagePaths: string[]): Promise<boolean> {
+export async function imageBuilder(imagePaths: string[], merklisteid: string) {
   if (imagePaths.length === 0) {
-    return false;
+    return new Promise((_, reject) =>
+      reject("1. No image path provided " + merklisteid));
   }
 
-  const tempLocalDir = path.join(".", imagePaths.length + "-" + new UUID(4).format());
-  await mkdirp(tempLocalDir);
-  if (await fs.existsSync(tempLocalDir)) {
-    const lst: OverlayOptions[] = await extractImages(imagePaths);
+  const bucket = admin.storage().bucket();
+  const tempDir = os.tmpdir();
 
-    lst.push(placeLokalkaufLogo(imagePaths));
+  const tempPaths: string[] = [];
+  await Promise.all(imagePaths.map(
+    async imagePath => {
+      if (imagePath && imagePath.length > 1) {
+        const remoteFile = bucket.file(imagePath);
+        const originalFile = path.join(tempDir, imagePath);
+        const tempLocalDir = path.dirname(originalFile);
+        await mkdirp(tempLocalDir);
+        await remoteFile.download({ destination: originalFile });
+        tempPaths.push(originalFile);
+      }
+    }
+  ));
 
-    const dimensions = await calculateBaseImageSize(imagePaths);
+  if (tempPaths.length === 0) {
+    return new Promise((_, reject) =>
+      reject("2. No image path provided" + merklisteid));
+  }
 
-    sharp({
-      create: {
-        width: dimensions.width,
-        height: dimensions.height,
-        channels: 3,
-        background: { r: 255, g: 255, b: 255 },
-      },
+  const lst: OverlayOptions[] = await extractImages(tempPaths);
+
+  const logoOptions = placeLokalkaufLogo(imagePaths);
+  if (logoOptions && logoOptions.input) {
+    console.log("logoOptions ", logoOptions);
+    const remoteFile = bucket.file(logoOptions.input.toString());
+    const originalFile = path.join(tempDir, logoOptions.input.toString());
+    const tempLocalDir = path.dirname(originalFile);
+    await mkdirp(tempLocalDir);
+    await remoteFile.download({ destination: originalFile });
+    const newOptions = { ...logoOptions, input: originalFile };
+    console.log("newOptions", newOptions);
+    lst.push(newOptions);
+  };
+
+  const dimensions = await calculateBaseImageSize(tempPaths);
+  const metadata = {
+    contentType: 'image/jpg',
+  };
+  sharp({
+    create: {
+      width: dimensions.width,
+      height: dimensions.height,
+      channels: 3,
+      background: { r: 255, g: 255, b: 255 },
+    },
+  })
+    .jpeg()
+    .composite(lst)
+    .sharpen()
+    .withMetadata()
+    .jpeg({ quality: 90 })
+    .toBuffer()
+    .then((data: any, info: any) => {
+      console.log(info);
+      bucket.file(`Merklisten/${merklisteid}/preview.jpg`).save(data, metadata, (err) => { console.log(err) });
+      return new Promise((succ, _) =>
+        succ());
     })
-      .jpeg()
-      .composite(lst)
-      .sharpen()
-      .withMetadata()
-      .jpeg({ quality: 90 })
-      .toFile(tempLocalDir + "/desti-" + imagePaths.length + ".jpg")
-      .then((info: any) => {
-        console.log(info);
-      })
-      .catch((err: any) => {
-        console.log(err);
-      });
-  }
-  return true;
+    .catch((err: any) => {
+      console.log(err);
+      return new Promise((_, reject) =>
+        reject(err));
+    });
 }
 /*
 imageBuilder(["./sources/a.jpg", "./sources/b.jpg"]);
