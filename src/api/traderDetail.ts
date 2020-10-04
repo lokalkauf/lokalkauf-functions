@@ -65,7 +65,7 @@ function buildHtmlWithTrader(traderId: string, trader: any, imgUrl: string) {
     '<meta property="og:description" content="' +
     trader.description +
     '" />' +
-    '<link rel="icon" href="https://www.lokalkauf.org/assets/lokalkauf-logo.svg">' +
+    '<link rel="icon" href="https://www.lokalkauf.org/assets/lokalkaufSocialMedia.png">' +
     '</head><body>' +
     '<script>window.location.replace("' +
     url +
