@@ -5,6 +5,7 @@ admin.initializeApp(functions.config().firebase);
 
 const sendGrid = require('./api/sendGrid');
 const traderDetail = require('./api/traderDetail');
+const merklisteMetaPage = require('./api/merklisteMetaPage');
 const serveSitemapIndex = require('./api/serveSitemap/serveSitemapIndex');
 const serveTraderSitemap = require('./api/serveSitemap/serveTraderSitemap');
 const serveBaseSitemap = require('./api/serveSitemap/serveBaseSitemap');
@@ -31,6 +32,7 @@ exports.deleteUser = deleteUser.deleteUser;
 exports.deleteProduct = deleteProduct.deleteProduct;
 exports.backupFirestoreDatabaseToStorage = backupFirestoreDatabaseToStorage.backupFirestoreDatabaseToStorage;
 exports.traderDetail = traderDetail.traderDetail;
+exports.merklisteMetaPage = merklisteMetaPage.merklisteMetaPage;
 exports.serveSitemapIndex = serveSitemapIndex.serveSitemapIndex;
 exports.serveTraderSitemap = serveTraderSitemap.serveTraderSitemap;
 exports.serveBaseSitemap = serveBaseSitemap.serveBaseSitemap;

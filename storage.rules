@@ -20,5 +20,11 @@ service firebase.storage {
       allow delete: if isCurrentUser(uid);
     }
   }
+
+  match /b/{bucket}/o {
+    match /Merklisten/{uid}/{multiSegment=**} {
+      allow read;
+  	}
+  }
   
 }
