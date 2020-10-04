@@ -16,6 +16,9 @@
   "dependencies": {
     "@sendgrid/mail": "^7.0.0",
     "@slack/webhook": "^5.0.3",
+    "@types/mkdirp": "^1.0.1",
+    "@types/node": "^14.0.27",
+    "@types/sharp": "^0.25.1",
     "@types/tmp": "^0.2.0",
     "algoliasearch": "^4.3.0",
     "axios": "^0.19.2",
@@ -29,7 +32,8 @@
     "javascript-stringify": "^2.0.1",
     "mkdirp": "^1.0.4",
     "moment": "^2.25.2",
-    "sharp": "^0.25.2",
+    "pure-uuid": "^1.6.1",
+    "sharp": "^0.25.4",
     "tmp": "^0.2.1"
   },
   "devDependencies": {
