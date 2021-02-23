@@ -8,10 +8,10 @@ import * as slack from './slack.provider';
 
 export async function traders(app: admin.app.App) : Promise<TradersInsights> {
 
-    try {        
+    try {
         console.log('generate traders insights...');
         const all: TraderEntity[] = await traderRepository.loadTraders(app);
-        
+
         const result =  {
             total : all.length,
             active : all.filter((t:TraderEntity) => t.status === 'PUBLIC').length,
@@ -26,7 +26,7 @@ export async function traders(app: admin.app.App) : Promise<TradersInsights> {
         for(let x=0; x < 50; x++) {
             const itms = all.filter((t: TraderEntity) => moment(t.createdAt).diff(Date.now(), 'days') < (x*-1)).length;
             dataCumulative.push(itms);
-            
+
             const itms24h = (x > 0)? (itms - dataCumulative[x-1])*-1 : 0;
             dataCumulative24h.push(itms24h);
 
@@ -44,7 +44,7 @@ export async function traders(app: admin.app.App) : Promise<TradersInsights> {
                 {
                     label: '24h',
                     data: dataCumulative24h.reverse(),
-                    backgroundColor: '#22B003'                   
+                    backgroundColor: '#22B003'
                 }
             ]
         }
@@ -56,14 +56,14 @@ export async function traders(app: admin.app.App) : Promise<TradersInsights> {
 
         const tradersLast50days = await quickchart.createStackedBarsUrl('Traders', data.labels, data.datasets);
         const tradersChartURL = await quickchart.createDoughnutUrl('curent Traders', result.total, data2.labels, data2.data);
-        
 
-        const someTraders = all.filter((t: TraderEntity) => moment(t.createdAt).diff(Date.now(), 'days') > -10)
+
+        const someTraders = all.filter((t: TraderEntity) => moment(t.createdAt).diff(Date.now(), 'days') > -100)
                                .sort((a,b) => a.createdAt - b.createdAt).reverse().filter(t => t.soMeShare && t.soMeShare === true)
-                               .map(t => `<https://lokalkauf.org/trader-detail/${t.id}|${t.postcode} ${t.city} - ${t.businessname}>  (created: ${moment(t.createdAt).fromNow()})`).join('\n');
+                               .map(t => `<https://lokalkauf.org/trader-detail/${t.id}%7C${t.postcode} ${t.city} - ${t.businessname}>  (created: ${moment(t.createdAt).fromNow()})`).join('\n');
 
-                               
-        await slack.sendMessage(app, "pls. some allowed: \n\n" + someTraders);        
+
+        await slack.sendMessage(app, "traders SoMe allowed: \n\n" + someTraders);
         await slack.sendMessage(app, "traders system update: ", tradersChartURL);
         await slack.sendMessage(app, "traders registration last 50 days: ", tradersLast50days);
 
@@ -71,6 +71,6 @@ export async function traders(app: admin.app.App) : Promise<TradersInsights> {
 
     } catch(err) {
         console.error(err);
-        throw new Error('calculating traders insights failed!');        
+        throw new Error('calculating traders insights failed!');
     }
 }
