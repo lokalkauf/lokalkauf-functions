@@ -60,7 +60,7 @@ export async function traders(app: admin.app.App) : Promise<TradersInsights> {
 
         const someTraders = all.filter((t: TraderEntity) => moment(t.createdAt).diff(Date.now(), 'days') > -100)
                                .sort((a,b) => a.createdAt - b.createdAt).reverse().filter(t => t.soMeShare && t.soMeShare === true)
-                               .map(t => `<https://lokalkauf.org/trader-detail/${t.id}%7C${t.postcode} ${t.city} - ${t.businessname}>  (created: ${moment(t.createdAt).fromNow()})`).join('\n');
+                               .map(t => `<https://lokalkauf.org/trader-detail/${t.id}> ${t.postcode} ${t.city} - ${t.businessname}  (created: ${moment(t.createdAt).fromNow()})`).join('\n');
 
 
         await slack.sendMessage(app, "traders SoMe allowed: \n\n" + someTraders);
