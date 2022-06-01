@@ -29,7 +29,7 @@
     "javascript-stringify": "^2.0.1",
     "mkdirp": "^1.0.4",
     "moment": "^2.25.2",
-    "sharp": "^0.25.2",
+    "sharp": "^0.30.5",
     "tmp": "^0.2.1"
   },
   "devDependencies": {
